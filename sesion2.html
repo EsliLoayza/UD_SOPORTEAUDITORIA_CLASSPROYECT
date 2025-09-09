@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 2: Hablando el Idioma del Auditor - COBIT 2019</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .animated-gradient {
+            background: linear-gradient(90deg, #1e3a8a, #3b82f6, #1e3a8a);
+            background-size: 200% 200%;
+            animation: gradient-animation 10s ease infinite;
+        }
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .domain-card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .domain-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .modal {
+            transition: opacity 0.25s ease;
+        }
+        /* Estilos para el nuevo diagrama */
+        .diagram-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        .diagram-center {
+            flex-basis: 100%;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        .diagram-node {
+            border: 2px solid;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            background-color: white;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 280px;
+            transition: transform 0.3s;
+        }
+        .diagram-node:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- ===== Header y Navegación ===== -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-gray-800">
+                <i class="fas fa-sitemap text-blue-600"></i>
+                Soporte de Auditoría TI
+            </div>
+            <div class="hidden md:flex space-x-6">
+                <a href="#objetivos" class="text-gray-600 hover:text-blue-600 transition duration-300">Objetivos</a>
+                <a href="#conceptos" class="text-gray-600 hover:text-blue-600 transition duration-300">Conceptos</a>
+                <a href="#caso-practico" class="text-gray-600 hover:text-blue-600 transition duration-300">Caso Práctico</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ===== Contenido Principal ===== -->
+    <main>
+
+        <!-- Sección Hero -->
+        <section class="animated-gradient text-white py-20 md:py-32">
+            <div class="container mx-auto px-6 text-center reveal">
+                <h1 class="text-4xl md:text-6xl font-extrabold mb-4" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">Sesión 02: Hablando el Idioma del Auditor</h1>
+                <p class="text-xl md:text-2xl max-w-3xl mx-auto" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">Hoy descifraremos COBIT 2019, el plano maestro que guía a los auditores para construir una fortaleza digital.</p>
+            </div>
+        </section>
+
+        <div class="container mx-auto px-6 py-12">
+            <!-- Sección de Objetivos -->
+            <section id="objetivos" class="mb-20 p-8 bg-white rounded-xl shadow-lg reveal">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-8">Objetivos de Aprendizaje de la Sesión</h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Contenido de objetivos sin cambios -->
+                    <div class="text-center p-6 bg-blue-50 rounded-lg">
+                        <i class="fas fa-drafting-compass text-4xl text-blue-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Comprender COBIT</h3>
+                        <p class="text-gray-600">Entender qué es COBIT y por qué es el "plano maestro" de la gobernanza de TI.</p>
+                    </div>
+                    <div class="text-center p-6 bg-blue-50 rounded-lg">
+                        <i class="fas fa-layer-group text-4xl text-blue-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Identificar Dominios</h3>
+                        <p class="text-gray-600">Reconocer los dominios principales de COBIT y su propósito general.</p>
+                    </div>
+                    <div class="text-center p-6 bg-blue-50 rounded-lg">
+                        <i class="fas fa-language text-4xl text-blue-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">"Traducir" Objetivos</h3>
+                        <p class="text-gray-600">Convertir un objetivo de control abstracto en una lista de evidencias técnicas concretas.</p>
+                    </div>
+                    <div class="text-center p-6 bg-blue-50 rounded-lg">
+                        <i class="fas fa-tasks text-4xl text-blue-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Preparar Evidencia</h3>
+                        <p class="text-gray-600">Listar los documentos y artefactos necesarios para satisfacer una solicitud de auditoría de seguridad de red.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección Conceptos Clave -->
+            <section id="conceptos" class="mb-20 reveal">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">Los Planos Maestros de COBIT</h2>
+                <div class="bg-white p-8 rounded-xl shadow-lg mb-12">
+                     <h3 class="text-2xl font-bold mb-4 text-gray-800">¿Por qué necesitamos un "plano"?</h3>
+                     <p class="text-gray-600 text-lg">Imagina construir un rascacielos (la Empresa) sin planos. El equipo de electricidad no sabría por dónde pasar los cables, el de plomería no sabría dónde van las tuberías y el de estructura no sabría qué muros son de carga. El resultado sería un caos inseguro y disfuncional. <br><br>En tecnología, ocurre lo mismo. **COBIT es el plano maestro** que asegura que todos los "equipos" (Redes, Desarrollo, Seguridad, Operaciones) trabajen de forma coordinada, segura y alineada con los objetivos del negocio.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Contenido de tarjetas de dominios sin cambios -->
+                     <div class="domain-card bg-white rounded-xl shadow-lg p-6 text-center border-t-4 border-blue-500">
+                        <i class="fas fa-compass text-5xl text-blue-500 mb-4"></i>
+                        <h3 class="text-2xl font-bold">APO</h3>
+                        <p class="font-semibold text-blue-600 mb-2">(Align, Plan and Organise)</p>
+                        <p class="text-gray-600">Define la estrategia. Es la fase de diseño de los planos, donde se decide la dirección y la estructura general de TI.</p>
+                    </div>
+                    <div class="domain-card bg-white rounded-xl shadow-lg p-6 text-center border-t-4 border-green-500">
+                        <i class="fas fa-hard-hat text-5xl text-green-500 mb-4"></i>
+                        <h3 class="text-2xl font-bold">BAI</h3>
+                        <p class="font-semibold text-green-600 mb-2">(Build, Acquire and Implement)</p>
+                        <p class="text-gray-600">Construye las soluciones. Aquí se ejecutan los planos, se levantan las estructuras y se implementan los sistemas.</p>
+                    </div>
+                    <div class="domain-card bg-white rounded-xl shadow-lg p-6 text-center border-t-4 border-purple-500">
+                        <i class="fas fa-tools text-5xl text-purple-500 mb-4"></i>
+                        <h3 class="text-2xl font-bold">DSS</h3>
+                        <p class="font-semibold text-purple-600 mb-2">(Deliver, Service and Support)</p>
+                        <p class="text-gray-600">Mantiene todo funcionando. Se encarga de la operación diaria, el soporte y la seguridad del edificio ya construido.</p>
+                    </div>
+                    <div class="domain-card bg-white rounded-xl shadow-lg p-6 text-center border-t-4 border-red-500">
+                        <i class="fas fa-clipboard-check text-5xl text-red-500 mb-4"></i>
+                        <h3 class="text-2xl font-bold">MEA</h3>
+                        <p class="font-semibold text-red-600 mb-2">(Monitor, Evaluate and Assess)</p>
+                        <p class="text-gray-600">Inspecciona la calidad. Verifica que todo se haya construido según los planos y que siga funcionando correctamente.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección Caso Práctico -->
+            <section id="caso-practico" class="reveal">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-2">Caso Práctico: El Traductor de Objetivos</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">El auditor senior, Sr. Reyes, le ha enviado un requerimiento. Su misión es "traducir" su solicitud formal en una lista de evidencias técnicas concretas que su equipo debe preparar.</p>
+                
+                <!-- *** NUEVO DIAGRAMA *** -->
+                <div class="bg-white rounded-xl shadow-lg p-8 mb-12">
+                    <h3 class="text-2xl font-bold text-center text-gray-800 mb-8">Desglosando el Objetivo DSS05.02</h3>
+                    <div class="diagram-container">
+                        <div class="diagram-center">
+                             <div class="inline-block bg-gray-800 text-white p-4 rounded-lg shadow-md">
+                                <p class="text-xl font-bold">OBJETIVO CENTRAL</p>
+                                <p>"Gestionar la seguridad de las redes"</p>
+                             </div>
+                        </div>
+                        
+                        <div class="diagram-node border-blue-500">
+                            <i class="fas fa-book text-4xl text-blue-500 mb-3"></i>
+                            <h4 class="text-xl font-bold mb-2">Evidencia de Políticas</h4>
+                            <p class="text-gray-600">Las reglas escritas. ¿Qué se supone que debemos hacer?</p>
+                        </div>
+                        
+                        <div class="diagram-node border-green-500">
+                             <i class="fas fa-cogs text-4xl text-green-500 mb-3"></i>
+                            <h4 class="text-xl font-bold mb-2">Evidencia de Configuración</h4>
+                            <p class="text-gray-600">La implementación técnica. ¿Realmente lo estamos haciendo?</p>
+                        </div>
+                        
+                        <div class="diagram-node border-purple-500">
+                            <i class="fas fa-chart-line text-4xl text-purple-500 mb-3"></i>
+                            <h4 class="text-xl font-bold mb-2">Evidencia de Monitoreo</h4>
+                            <p class="text-gray-600">La vigilancia continua. ¿Estamos revisando que funcione?</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- *** FIN DEL NUEVO DIAGRAMA *** -->
+
+                <div class="bg-white rounded-xl shadow-2xl p-8 lg:p-12">
+                    <div class="grid lg:grid-cols-2 gap-12 items-center">
+                        <!-- Columna del Auditor -->
+                        <div class="text-center bg-gray-100 p-8 rounded-lg border-2 border-gray-300">
+                            <i class="fas fa-file-alt text-6xl text-gray-600 mb-4"></i>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-2">Solicitud del Auditor (COBIT)</h3>
+                            <p class="text-xl font-semibold bg-gray-800 text-white py-2 px-4 rounded-md mb-4">DSS05.02</p>
+                            <p class="text-gray-700 font-medium text-lg">"Validar que existen y se aplican controles para gestionar la seguridad de las redes y la conectividad, protegiendo así la información en tránsito."</p>
+                        </div>
+                        
+                        <!-- Columna del Traductor (Su Trabajo) -->
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-6">Su Traducción (Lista de Evidencia Técnica)</h3>
+                            <div class="space-y-6">
+                                <div>
+                                    <label for="politicas" class="block font-semibold mb-2 text-blue-700"><i class="fas fa-book mr-2"></i>1. Políticas y Estándares:</label>
+                                    <textarea id="politicas" rows="3" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="¿Qué documentos definen las reglas del juego? Ej: Política de Seguridad de Red, Estándar de Configuración de Firewalls..."></textarea>
+                                </div>
+                                <div>
+                                    <label for="configuracion" class="block font-semibold mb-2 text-green-700"><i class="fas fa-cogs mr-2"></i>2. Artefactos de Configuración:</label>
+                                    <textarea id="configuracion" rows="3" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition" placeholder="¿Cómo demuestro que las reglas se están aplicando? Ej: Export de reglas del Firewall Perimetral, Diagrama de red actualizado..."></textarea>
+                                </div>
+                                <div>
+                                    <label for="monitoreo" class="block font-semibold mb-2 text-purple-700"><i class="fas fa-chart-line mr-2"></i>3. Registros de Monitoreo y Operación:</label>
+                                    <textarea id="monitoreo" rows="3" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition" placeholder="¿Cómo pruebo que estamos vigilando activamente? Ej: Logs del IDS/IPS de la última semana, Reporte de escaneo de vulnerabilidades..."></textarea>
+                                </div>
+                            </div>
+                            <button id="checkWorkBtn" class="mt-8 w-full bg-blue-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-blue-700 transition duration-300 text-lg">
+                                Revisar mi Trabajo <i class="fas fa-check-double ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Sección de Cierre y Navegación -->
+            <section class="text-center mt-20 reveal">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Ha Descifrado el Código COBIT</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto mb-8">Ahora puede transformar solicitudes complejas en planes de acción claros. En la próxima sesión, aplicaremos esta lógica al proceso de auditoría y la gestión de evidencia.</p>
+                 <!-- *** NAVEGACIÓN ACTUALIZADA *** -->
+                 <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                    <a href="index.html" class="w-full sm:w-auto inline-block border-2 border-blue-600 text-blue-600 font-bold py-3 px-8 rounded-lg shadow-md hover:bg-blue-100 transition duration-300">
+                        <i class="fas fa-arrow-left mr-2"></i> Regresar a la Sesión 1
+                    </a>
+                    <a href="sesion3.html" class="w-full sm:w-auto inline-block bg-blue-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-blue-700 transition duration-300">
+                        Continuar a la Sesión 3 <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+                <!-- *** FIN DE NAVEGACIÓN ACTUALIZADA *** -->
+            </section>
+        </div>
+    </main>
+
+    <!-- ===== Footer ===== -->
+    <footer class="bg-gray-800 text-white mt-20">
+        <div class="container mx-auto px-6 py-4 text-center">
+            <p>&copy; 2025 - Unidad Didáctica: Soporte de Auditoría de TI. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- ===== Modal de Solución ===== -->
+    <div id="solutionModal" class="modal fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 opacity-0 pointer-events-none">
+        <div class="bg-white rounded-xl shadow-2xl p-8 max-w-2xl w-full transform scale-95 transition-transform duration-300">
+            <div class="flex justify-between items-center border-b pb-3 mb-4">
+                <h3 class="text-2xl font-bold text-blue-700">Ejemplo de Respuesta Profesional</h3>
+                <button id="closeModalBtn" class="text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
+            </div>
+            <div class="space-y-4 text-gray-700">
+                <div>
+                    <h4 class="font-bold text-blue-600">1. Políticas y Estándares:</h4>
+                    <ul class="list-disc list-inside ml-4">
+                        <li>Documento "POL-SEG-002: Política de Seguridad de Red".</li>
+                        <li>Documento "STD-CFG-004: Estándar de Configuración de Firewalls Cisco ASA".</li>
+                        <li>Procedimiento "PRO-SEG-007: Revisión trimestral de reglas de firewall".</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-green-600">2. Artefactos de Configuración:</h4>
+                    <ul class="list-disc list-inside ml-4">
+                        <li>Export en PDF de la configuración actual del Firewall Perimetral (FW-CORP-01).</li>
+                        <li>Diagrama de red en Visio (v.2.5) mostrando las zonas (DMZ, Red Interna, Red de Invitados).</li>
+                        <li>Capturas de pantalla de la configuración de VLANs en el switch core (SW-CORE-01).</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-purple-600">3. Registros de Monitoreo y Operación:</h4>
+                    <ul class="list-disc list-inside ml-4">
+                        <li>Informe del SIEM con los eventos críticos de seguridad de red de los últimos 30 días.</li>
+                        <li>Reporte del último escaneo de vulnerabilidades externas (Qualys, con fecha de hace 2 semanas).</li>
+                        <li>Acta de la última reunión trimestral de revisión de reglas de firewall.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // Animaciones de entrada al hacer scroll
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // Lógica del Modal
+        const modal = document.getElementById('solutionModal');
+        const checkWorkBtn = document.getElementById('checkWorkBtn');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const modalContent = modal.querySelector('.transform');
+
+        checkWorkBtn.addEventListener('click', () => {
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            setTimeout(() => modalContent.classList.remove('scale-95'), 50);
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            modalContent.classList.add('scale-95');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModalBtn.click();
+            }
+        });
+    </script>
+
+</body>
+</html>
+
