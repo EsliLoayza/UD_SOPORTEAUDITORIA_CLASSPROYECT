@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 3: El Arte de la Evidencia Profesional</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter & Roboto Mono for code -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!-- Crypto-JS for Hashing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .font-mono {
+            font-family: 'Roboto Mono', monospace;
+        }
+        .animated-gradient-dark {
+            background: linear-gradient(90deg, #111827, #1e3a8a, #111827);
+            background-size: 200% 200%;
+            animation: gradient-animation 15s ease infinite;
+        }
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Estilos para el terminal interactivo */
+        .terminal {
+            background-color: #1E293B; /* slate-800 */
+            color: #E2E8F0; /* slate-200 */
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid #334155; /* slate-700 */
+        }
+        .terminal-command {
+            position: relative;
+            background-color: #334155; /* slate-700 */
+            padding: 0.75rem 3rem 0.75rem 1rem;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .terminal-command:hover {
+            background-color: #475569; /* slate-600 */
+        }
+        .copy-icon {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94A3B8; /* slate-400 */
+            transition: color 0.2s;
+        }
+        .terminal-command:hover .copy-icon {
+            color: #E2E8F0;
+        }
+        .terminal-output {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #0F172A; /* slate-900 */
+            border-radius: 0.25rem;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            display: none; /* Oculto por defecto */
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -31px;
+            top: 12px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #3B82F6;
+            border: 3px solid #BFDBFE;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- ===== Header y Navegación ===== -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-gray-800">
+                <i class="fas fa-fingerprint text-blue-600"></i>
+                Soporte de Auditoría TI
+            </div>
+            <div class="hidden md:flex space-x-6">
+                <a href="#objetivos" class="text-gray-600 hover:text-blue-600 transition duration-300">Objetivos</a>
+                <a href="#proceso" class="text-gray-600 hover:text-blue-600 transition duration-300">Proceso</a>
+                <a href="#integridad" class="text-gray-600 hover:text-blue-600 transition duration-300">Integridad</a>
+                <a href="#caso-practico" class="text-gray-600 hover:text-blue-600 transition duration-300">Laboratorio</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ===== Contenido Principal ===== -->
+    <main>
+
+        <!-- Sección Hero -->
+        <section class="animated-gradient-dark text-white py-20 md:py-32">
+            <div class="container mx-auto px-6 text-center reveal">
+                <h1 class="text-4xl md:text-6xl font-extrabold mb-4" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">Sesión 03: El Laboratorio Forense Digital</h1>
+                <p class="text-xl md:text-2xl max-w-3xl mx-auto text-gray-300" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">Hoy no solo encontrarás la evidencia. Aprenderás a recolectarla, preservarla y presentarla de forma irrefutable.</p>
+            </div>
+        </section>
+
+        <div class="container mx-auto px-6 py-12">
+            <!-- Sección de Objetivos -->
+            <section id="objetivos" class="mb-20 p-8 bg-white rounded-xl shadow-lg reveal">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-8">Misión de la Sesión</h2>
+                 <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="text-center p-6 bg-blue-50 rounded-lg">
+                        <i class="fas fa-route text-4xl text-blue-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Dominar el Proceso</h3>
+                        <p class="text-gray-600">Describir las 4 fases de una auditoría y tu rol clave en cada una de ellas.</p>
+                    </div>
+                    <div class="text-center p-6 bg-blue-50 rounded-lg">
+                        <i class="fas fa-balance-scale text-4xl text-blue-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Evaluar la Evidencia</h3>
+                        <p class="text-gray-600">Juzgar la calidad de la evidencia basándote en su suficiencia, relevancia y fiabilidad.</p>
+                    </div>
+                    <div class="text-center p-6 bg-blue-50 rounded-lg">
+                        <i class="fas fa-shield-alt text-4xl text-blue-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Asegurar Integridad</h3>
+                        <p class="text-gray-600">Utilizar funciones hash (SHA-256) para garantizar que la evidencia no ha sido alterada.</p>
+                    </div>
+                    <div class="text-center p-6 bg-blue-50 rounded-lg">
+                        <i class="fas fa-file-signature text-4xl text-blue-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Documentar Profesionalmente</h3>
+                        <p class="text-gray-600">Crear un "papel de trabajo" formal para registrar tus procedimientos y hallazgos.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección Proceso de Auditoría -->
+            <section id="proceso" class="mb-20 reveal">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">Las 4 Fases de una Investigación de Auditoría</h2>
+                <div class="relative pl-8 border-l-2 border-blue-300">
+                    <!-- Item 1 -->
+                    <div class="mb-10 timeline-item">
+                        <h3 class="text-2xl font-bold text-blue-700 mb-2">1. Planificación</h3>
+                        <p class="text-gray-600 text-lg">El detective define el plan de acción. Tu rol como soporte es preparar el "mapa de la escena del crimen": diagramas de red, inventarios de sistemas y políticas actuales.</p>
+                    </div>
+                    <!-- Item 2 -->
+                    <div class="mb-10 timeline-item">
+                        <h3 class="text-2xl font-bold text-blue-700 mb-2">2. Trabajo de Campo</h3>
+                        <p class="text-gray-600 text-lg">¡La acción! El detective recolecta las pistas. Tú eres el protagonista que extrae y entrega las "pistas" digitales: logs, configuraciones y reportes.</p>
+                    </div>
+                    <!-- Item 3 -->
+                    <div class="mb-10 timeline-item">
+                        <h3 class="text-2xl font-bold text-blue-700 mb-2">3. Informe</h3>
+                        <p class="text-gray-600 text-lg">El detective presenta su caso. Tú ayudas a validar los detalles técnicos antes de que el informe sea final, asegurando que las conclusiones sean precisas.</p>
+                    </div>
+                    <!-- Item 4 -->
+                    <div class="timeline-item">
+                        <h3 class="text-2xl font-bold text-blue-700 mb-2">4. Seguimiento</h3>
+                        <p class="text-gray-600 text-lg">El detective verifica que se cumplió la sentencia. Tú provees la nueva evidencia que demuestra que las fallas de seguridad fueron corregidas.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección Integridad -->
+            <section id="integridad" class="mb-20 p-8 bg-white rounded-xl shadow-lg reveal">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-8">El Sello de Integridad: La Huella Digital Matemática</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">¿Cómo probamos que una evidencia digital no ha cambiado ni en un solo bit? Usamos una función hash (SHA-256). Experimenta con nuestro Analizador de Integridad para ver el "efecto avalancha" en tiempo real.</p>
+                <div class="grid md:grid-cols-2 gap-8 items-center bg-gray-50 p-8 rounded-lg">
+                    <div>
+                        <label for="hash-input" class="block text-lg font-semibold mb-2">Ingresa cualquier texto o dato:</label>
+                        <textarea id="hash-input" rows="6" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition font-mono text-sm" placeholder="Escribe aquí... verás cómo cambia el hash al instante."></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-lg font-semibold mb-2">Hash SHA-256 Resultante:</label>
+                        <div id="hash-output" class="w-full p-3 bg-gray-200 border border-gray-300 rounded-lg font-mono text-sm break-all text-green-700 font-bold">e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</div>
+                         <p class="text-xs text-gray-500 mt-2">Este es el hash de un texto vacío. ¡Intenta cambiarlo!</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección Caso Práctico -->
+            <section id="caso-practico" class="reveal">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-2">Laboratorio: El Papel de Trabajo</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">Un auditor te ha solicitado la política de contraseñas de un servidor. Usarás nuestro terminal simulado para extraer la evidencia, asegurar su integridad y documentar todo en un papel de trabajo profesional.</p>
+                
+                <div class="terminal font-mono">
+                    <p class="mb-4">> Sigue los pasos. Haz clic en cada comando para copiarlo y ver el resultado.</p>
+                    
+                    <!-- Paso 1 -->
+                    <p class="text-yellow-400">> Paso 1: Crea una carpeta de trabajo (da clic para copiar)</p>
+                    <div id="cmd1" class="terminal-command" onclick="runCommand(1)">
+                        <span class="text-cyan-400">$</span> mkdir C:\Temp
+                        <i class="fas fa-copy copy-icon"></i>
+                    </div>
+                    <div id="out1" class="terminal-output">Comando ejecutado. Carpeta C:\Temp creada para aislar la evidencia.</div>
+
+                    <!-- Paso 2 -->
+                    <p class="mt-4 text-yellow-400">> Paso 2: Exporta la política de seguridad</p>
+                    <div id="cmd2" class="terminal-command" onclick="runCommand(2)">
+                        <span class="text-cyan-400">$</span> secedit /export /cfg C:\Temp\MiPolitica.inf
+                         <i class="fas fa-copy copy-icon"></i>
+                    </div>
+                    <div id="out2" class="terminal-output">Configuración exportada exitosamente a C:\Temp\MiPolitica.inf. El archivo contiene los parámetros de seguridad locales.</div>
+                    
+                    <!-- Paso 3 -->
+                    <p class="mt-4 text-yellow-400">> Paso 3: Calcula el hash para asegurar la integridad</p>
+                    <div id="cmd3" class="terminal-command" onclick="runCommand(3)">
+                        <span class="text-cyan-400">$</span> certutil -hashfile C:\Temp\MiPolitica.inf SHA256
+                         <i class="fas fa-copy copy-icon"></i>
+                    </div>
+                    <div id="out3" class="terminal-output">
+                        <p>Hash SHA256 de C:\Temp\MiPolitica.inf:</p>
+                        <p class="text-green-400">8c2e4a8f9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e</p>
+                        <p class="mt-2">CertUtil: -hashfile se completó correctamente.</p>
+                        <p class="text-yellow-400 mt-2">¡Copia este hash! Lo necesitarás para tu papel de trabajo.</p>
+                    </div>
+
+                    <!-- Paso 4 -->
+                     <p class="mt-4 text-yellow-400">> Paso 4: Documenta tu trabajo</p>
+                    <div class="p-4 bg-blue-900/50 rounded-md">
+                        <p class="text-slate-200">Ahora, con la evidencia extraída y el hash calculado, abre la plantilla "Formato de Papel de Trabajo" proporcionada y rellena todos los campos. Este documento es tu entregable final.</p>
+                    </div>
+
+                </div>
+            </section>
+            
+            <!-- Sección de Cierre y Navegación -->
+            <section class="text-center mt-20 reveal">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Misión Cumplida, Detective</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto mb-8">Has aprendido a manejar la evidencia como un profesional. En la próxima sesión, auditaremos el proceso de construcción y cambio de software.</p>
+                 <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                    <a href="sesion2.html" class="w-full sm:w-auto inline-block border-2 border-blue-600 text-blue-600 font-bold py-3 px-8 rounded-lg shadow-md hover:bg-blue-100 transition duration-300">
+                        <i class="fas fa-arrow-left mr-2"></i> Regresar a la Sesión 2
+                    </a>
+                    <a href="sesion4.html" class="w-full sm:w-auto inline-block bg-blue-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-blue-700 transition duration-300">
+                        Continuar a la Sesión 4 <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- ===== Footer ===== -->
+    <footer class="bg-gray-800 text-white mt-20">
+        <div class="container mx-auto px-6 py-4 text-center">
+            <p>&copy; 2025 - Unidad Didáctica: Soporte de Auditoría de TI. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Animaciones de entrada al hacer scroll
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // Lógica del Analizador de Integridad Hash
+        const hashInput = document.getElementById('hash-input');
+        const hashOutput = document.getElementById('hash-output');
+        hashInput.addEventListener('input', () => {
+            const text = hashInput.value;
+            if (text.length === 0) {
+                hashOutput.textContent = 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'; // Hash for empty string
+            } else {
+                const hash = CryptoJS.SHA256(text).toString(CryptoJS.enc.Hex);
+                hashOutput.textContent = hash;
+            }
+        });
+
+        // Lógica del Terminal Interactivo
+        function runCommand(step) {
+            const commandEl = document.getElementById(`cmd${step}`);
+            const outputEl = document.getElementById(`out${step}`);
+            const commandText = commandEl.innerText.replace('$ ', '').trim();
+
+            // Copiar al portapapeles
+            navigator.clipboard.writeText(commandText).then(() => {
+                const icon = commandEl.querySelector('.copy-icon');
+                const originalClass = icon.className;
+                icon.className = 'fas fa-check text-green-400 copy-icon';
+                setTimeout(() => { icon.className = originalClass; }, 1500);
+            });
+
+            // Mostrar salida
+            if (outputEl.style.display === 'block') {
+                 outputEl.style.display = 'none';
+            } else {
+                 outputEl.style.display = 'block';
+            }
+        }
+    </script>
+
+</body>
+</html>

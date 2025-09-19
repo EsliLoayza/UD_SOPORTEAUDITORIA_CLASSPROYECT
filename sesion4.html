@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 4: Auditoría a la Construcción de Software</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .warm-gradient {
+            background: linear-gradient(90deg, #f59e0b, #ea580c, #f59e0b);
+            background-size: 200% 200%;
+            animation: gradient-animation 15s ease infinite;
+        }
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Estilos para la línea de tiempo del SDLC */
+        .timeline-step {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .timeline-step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+        /* Estilos para el simulador de arrastrar y soltar */
+        .document {
+            cursor: grab;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .document:active {
+            cursor: grabbing;
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2);
+        }
+        .drop-zone {
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .drop-zone.drag-over {
+            background-color: #dcfce7; /* green-100 */
+            border-color: #22c55e; /* green-500 */
+        }
+        .folder-icon.filled::after {
+            content: '📄';
+            position: absolute;
+            top: 25%;
+            left: 35%;
+            font-size: 1.5rem;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body class="bg-amber-50 text-gray-800">
+
+    <!-- ===== Header y Navegación ===== -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-gray-800">
+                <i class="fas fa-hard-hat text-orange-500"></i>
+                Soporte de Auditoría TI
+            </div>
+            <div class="hidden md:flex space-x-6">
+                <a href="#objetivos" class="text-gray-600 hover:text-orange-500 transition duration-300">Objetivos</a>
+                <a href="#sdlc" class="text-gray-600 hover:text-orange-500 transition duration-300">SDLC</a>
+                <a href="#cambios" class="text-gray-600 hover:text-orange-500 transition duration-300">Cambios</a>
+                <a href="#caso-practico" class="text-gray-600 hover:text-orange-500 transition duration-300">Simulador</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ===== Contenido Principal ===== -->
+    <main>
+
+        <!-- Sección Hero -->
+        <section class="warm-gradient text-white py-20 md:py-32">
+            <div class="container mx-auto px-6 text-center reveal">
+                <h1 class="text-4xl md:text-6xl font-extrabold mb-4" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">Sesión 04: Auditoría a la Construcción de Software</h1>
+                <p class="text-xl md:text-2xl max-w-3xl mx-auto" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">Hoy serás el Inspector de Obras Digitales, asegurando que cada cambio siga los planos y tenga los permisos correctos.</p>
+            </div>
+        </section>
+
+        <div class="container mx-auto px-6 py-12">
+            <!-- Sección de Objetivos -->
+            <section id="objetivos" class="mb-20 p-8 bg-white rounded-xl shadow-lg reveal">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-8">Habilidades a Construir Hoy</h2>
+                 <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="text-center p-6 bg-orange-50 rounded-lg">
+                        <i class="fas fa-ruler-combined text-4xl text-orange-500 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Entender el SDLC</h3>
+                        <p class="text-gray-600">Explicar las fases del "plano" para construir software de calidad.</p>
+                    </div>
+                    <div class="text-center p-6 bg-orange-50 rounded-lg">
+                        <i class="fas fa-stamp text-4xl text-orange-500 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Dominar la Gestión de Cambios</h3>
+                        <p class="text-gray-600">Describir el proceso de "permisos" para modificar un sistema en producción.</p>
+                    </div>
+                    <div class="text-center p-6 bg-orange-50 rounded-lg">
+                        <i class="fas fa-folder-open text-4xl text-orange-500 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Identificar Evidencia Clave</h3>
+                        <p class="text-gray-600">Saber qué documentos buscar para probar que un cambio fue correcto.</p>
+                    </div>
+                    <div class="text-center p-6 bg-orange-50 rounded-lg">
+                        <i class="fas fa-sitemap text-4xl text-orange-500 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Construir Trazabilidad</h3>
+                        <p class="text-gray-600">Organizar la evidencia para contar la historia completa de un cambio.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección SDLC -->
+            <section id="sdlc" class="mb-20 reveal">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-4">El Plano Maestro: Ciclo de Vida del Desarrollo (SDLC)</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">Construir software es como construir un edificio. Se necesita un proceso ordenado para asegurar la calidad y la seguridad. Haz clic en cada fase para ver los detalles.</p>
+                <div class="grid md:grid-cols-3 lg:grid-cols-6 gap-4">
+                    <div class="timeline-step bg-white p-4 rounded-lg shadow text-center">
+                        <i class="fas fa-lightbulb text-3xl text-amber-500 mb-2"></i><h3 class="font-bold">1. Requerimientos</h3>
+                    </div>
+                    <div class="timeline-step bg-white p-4 rounded-lg shadow text-center">
+                        <i class="fas fa-drafting-compass text-3xl text-amber-500 mb-2"></i><h3 class="font-bold">2. Diseño</h3>
+                    </div>
+                    <div class="timeline-step bg-white p-4 rounded-lg shadow text-center">
+                        <i class="fas fa-code text-3xl text-amber-500 mb-2"></i><h3 class="font-bold">3. Desarrollo</h3>
+                    </div>
+                    <div class="timeline-step bg-white p-4 rounded-lg shadow text-center">
+                        <i class="fas fa-vial text-3xl text-amber-500 mb-2"></i><h3 class="font-bold">4. Pruebas (QA)</h3>
+                    </div>
+                    <div class="timeline-step bg-white p-4 rounded-lg shadow text-center">
+                        <i class="fas fa-rocket text-3xl text-amber-500 mb-2"></i><h3 class="font-bold">5. Despliegue</h3>
+                    </div>
+                    <div class="timeline-step bg-white p-4 rounded-lg shadow text-center">
+                        <i class="fas fa-tools text-3xl text-amber-500 mb-2"></i><h3 class="font-bold">6. Mantenimiento</h3>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección Gestión de Cambios -->
+            <section id="cambios" class="mb-20 p-8 bg-white rounded-xl shadow-lg reveal">
+                 <h2 class="text-3xl font-bold text-center text-gray-900 mb-4">El Permiso de Remodelación: Gestión de Cambios</h2>
+                 <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">Una vez que el "edificio" está en uso, no puedes simplemente tirar un muro. Necesitas un permiso formal. Este proceso asegura que cada cambio sea controlado, seguro y minimice el riesgo de un "derrumbe" (caída del sistema).</p>
+                 <div class="grid md:grid-cols-3 gap-8">
+                     <div class="text-center">
+                        <div class="bg-orange-100 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-4">
+                           <i class="fas fa-file-signature text-4xl text-orange-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Change Request (CR)</h3>
+                        <p>El formulario oficial que describe la remodelación, su porqué y su impacto.</p>
+                     </div>
+                      <div class="text-center">
+                        <div class="bg-orange-100 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-4">
+                           <i class="fas fa-users-cog text-4xl text-orange-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Change Advisory Board (CAB)</h3>
+                        <p>El "municipio" o comité de expertos que revisa y aprueba (o rechaza) el permiso.</p>
+                     </div>
+                      <div class="text-center">
+                        <div class="bg-orange-100 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-4">
+                           <i class="fas fa-undo-alt text-4xl text-orange-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Plan de Rollback</h3>
+                        <p>El plan de emergencia. Si algo sale mal, ¿cómo deshacemos el cambio y volvemos al estado original?</p>
+                     </div>
+                 </div>
+            </section>
+
+            <!-- Sección Caso Práctico -->
+            <section id="caso-practico" class="reveal">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-2">Simulador: Construyendo el Paquete de Evidencia</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">El auditor te ha pedido la evidencia del cambio **CR-045**. Arrastra cada documento desde tu "escritorio" a la carpeta correcta para construir un paquete de evidencia con trazabilidad perfecta.</p>
+                
+                <div class="bg-white rounded-xl shadow-2xl p-8 lg:p-12">
+                    <div class="grid lg:grid-cols-3 gap-8">
+                        <!-- Columna de Documentos -->
+                        <div class="lg:col-span-1">
+                            <h3 class="font-bold text-lg mb-4 text-center">Documentos en tu Escritorio</h3>
+                            <div id="documents-container" class="space-y-3 p-4 bg-gray-100 rounded-lg min-h-[300px]">
+                                <div id="doc1" draggable="true" data-target="folder1" class="document bg-white p-3 rounded-lg shadow flex items-center gap-3"><i class="fas fa-file-alt text-blue-500"></i> CR-045_Solicitud.docx</div>
+                                <div id="doc2" draggable="true" data-target="folder2" class="document bg-white p-3 rounded-lg shadow flex items-center gap-3"><i class="fas fa-file-excel text-green-500"></i> Reporte_Pruebas_QA.xlsx</div>
+                                <div id="doc3" draggable="true" data-target="folder1" class="document bg-white p-3 rounded-lg shadow flex items-center gap-3"><i class="fas fa-file-pdf text-red-500"></i> Acta_CAB_Aprobacion.pdf</div>
+                                <div id="doc4" draggable="true" data-target="folder3" class="document bg-white p-3 rounded-lg shadow flex items-center gap-3"><i class="fas fa-file-word text-blue-500"></i> Plan_Rollback.docx</div>
+                                <div id="doc5" draggable="true" data-target="folder3" class="document bg-white p-3 rounded-lg shadow flex items-center gap-3"><i class="fas fa-file-alt text-blue-500"></i> Acta_Pase_PROD.docx</div>
+                            </div>
+                        </div>
+
+                        <!-- Columna de Carpetas -->
+                        <div class="lg:col-span-2">
+                            <h3 class="font-bold text-lg mb-4 text-center">Paquete de Evidencia: CR-045</h3>
+                            <div class="space-y-4">
+                                <div id="folder1" class="drop-zone border-2 border-dashed border-gray-300 rounded-lg p-4 min-h-[120px]">
+                                    <h4 class="font-semibold flex items-center gap-2"><i id="icon-folder1" class="fas fa-folder text-3xl text-amber-500 folder-icon"></i> 1. Solicitud y Aprobación</h4>
+                                    <div id="content-folder1" class="pl-10 mt-2 space-y-2"></div>
+                                </div>
+                                <div id="folder2" class="drop-zone border-2 border-dashed border-gray-300 rounded-lg p-4 min-h-[120px]">
+                                    <h4 class="font-semibold flex items-center gap-2"><i id="icon-folder2" class="fas fa-folder text-3xl text-amber-500 folder-icon"></i> 2. Pruebas</h4>
+                                    <div id="content-folder2" class="pl-10 mt-2 space-y-2"></div>
+                                </div>
+                                <div id="folder3" class="drop-zone border-2 border-dashed border-gray-300 rounded-lg p-4 min-h-[120px]">
+                                    <h4 class="font-semibold flex items-center gap-2"><i id="icon-folder3" class="fas fa-folder text-3xl text-amber-500 folder-icon"></i> 3. Planes y Ejecución</h4>
+                                    <div id="content-folder3" class="pl-10 mt-2 space-y-2"></div>
+                                </div>
+                            </div>
+                            <button id="resetBtn" class="mt-6 w-full bg-gray-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-gray-600 transition">Reiniciar Simulador</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Sección de Cierre y Navegación -->
+            <section class="text-center mt-20 reveal">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">¡Paquete de Evidencia Completo!</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto mb-8">Has demostrado la trazabilidad del cambio de forma impecable. En la próxima sesión, auditaremos el control de acceso de los usuarios a los sistemas.</p>
+                 <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                    <a href="sesion3.html" class="w-full sm:w-auto inline-block border-2 border-orange-500 text-orange-500 font-bold py-3 px-8 rounded-lg shadow-md hover:bg-orange-100 transition duration-300">
+                        <i class="fas fa-arrow-left mr-2"></i> Regresar a la Sesión 3
+                    </a>
+                    <a href="sesion5.html" class="w-full sm:w-auto inline-block bg-orange-500 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-orange-600 transition duration-300">
+                        Continuar a la Sesión 5 <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- ===== Footer ===== -->
+    <footer class="bg-gray-800 text-white mt-20">
+        <div class="container mx-auto px-6 py-4 text-center">
+            <p>&copy; 2025 - Unidad Didáctica: Soporte de Auditoría de TI. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Animaciones de entrada al hacer scroll
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // Lógica del Simulador de Arrastrar y Soltar
+        const documents = document.querySelectorAll('.document');
+        const dropZones = document.querySelectorAll('.drop-zone');
+        const initialDocumentsContainer = document.getElementById('documents-container').innerHTML;
+
+        let draggedItem = null;
+
+        documents.forEach(doc => {
+            doc.addEventListener('dragstart', (e) => {
+                draggedItem = e.target;
+                setTimeout(() => {
+                    e.target.style.display = 'none';
+                }, 0);
+            });
+
+            doc.addEventListener('dragend', (e) => {
+                setTimeout(() => {
+                    if (draggedItem) {
+                        draggedItem.style.display = 'flex';
+                        draggedItem = null;
+                    }
+                }, 0);
+            });
+        });
+
+        dropZones.forEach(zone => {
+            zone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                zone.classList.add('drag-over');
+            });
+
+            zone.addEventListener('dragleave', (e) => {
+                zone.classList.remove('drag-over');
+            });
+
+            zone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                zone.classList.remove('drag-over');
+                if (draggedItem && draggedItem.dataset.target === zone.id) {
+                    const contentZone = document.getElementById(`content-${zone.id}`);
+                    draggedItem.style.display = 'flex'; // Asegurarse de que es visible
+                    draggedItem.setAttribute('draggable', 'false');
+                    draggedItem.style.cursor = 'default';
+                    contentZone.appendChild(draggedItem);
+                    
+                    const folderIcon = document.getElementById(`icon-${zone.id}`);
+                    folderIcon.classList.remove('fa-folder');
+                    folderIcon.classList.add('fa-folder-open', 'filled');
+                    draggedItem = null;
+                }
+            });
+        });
+        
+        // Botón de Reinicio
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            document.getElementById('documents-container').innerHTML = initialDocumentsContainer;
+            
+            // Re-enlazar eventos a los nuevos documentos
+            document.querySelectorAll('.document').forEach(doc => {
+                 doc.addEventListener('dragstart', (e) => {
+                    draggedItem = e.target;
+                    setTimeout(() => { e.target.style.display = 'none'; }, 0);
+                });
+                doc.addEventListener('dragend', (e) => {
+                    setTimeout(() => {
+                        if (draggedItem) {
+                            draggedItem.style.display = 'flex';
+                            draggedItem = null;
+                        }
+                    }, 0);
+                });
+            });
+
+            dropZones.forEach(zone => {
+                document.getElementById(`content-${zone.id}`).innerHTML = '';
+                const folderIcon = document.getElementById(`icon-${zone.id}`);
+                folderIcon.classList.add('fa-folder');
+                folderIcon.classList.remove('fa-folder-open', 'filled');
+            });
+        });
+
+    </script>
+
+</body>
+</html>
