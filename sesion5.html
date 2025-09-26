@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 5: El Guardián de las Puertas Digitales</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .warm-gradient-2 {
+            background: linear-gradient(90deg, #b45309, #d97706, #f97316, #d97706, #b45309);
+            background-size: 300% 300%;
+            animation: gradient-animation 20s ease infinite;
+        }
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Estilos para el simulador de Active Directory */
+        .ad-tree-item {
+            cursor: pointer;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s;
+        }
+        .ad-tree-item.active, .ad-tree-item:hover {
+            background-color: #fef3c7; /* amber-100 */
+        }
+        .ad-user-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+        }
+        .ad-user-item:hover {
+            background-color: #f1f5f9; /* slate-100 */
+        }
+        /* Estilos para el modal */
+        .modal {
+            transition: opacity 0.3s ease;
+        }
+        .modal-content {
+            transition: transform 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-amber-50 text-gray-900">
+
+    <!-- ===== Header y Navegación ===== -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-gray-800">
+                <i class="fas fa-id-card-alt text-amber-600"></i>
+                Soporte de Auditoría TI
+            </div>
+            <div class="hidden md:flex space-x-6">
+                <a href="#objetivos" class="text-gray-600 hover:text-amber-600 transition duration-300">Objetivos</a>
+                <a href="#conceptos" class="text-gray-600 hover:text-amber-600 transition duration-300">Conceptos</a>
+                <a href="#polp" class="text-gray-600 hover:text-amber-600 transition duration-300">PoLP</a>
+                <a href="#caso-practico" class="text-gray-600 hover:text-amber-600 transition duration-300">Simulador</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ===== Contenido Principal ===== -->
+    <main>
+
+        <!-- Sección Hero -->
+        <section class="warm-gradient-2 text-white py-20 md:py-32">
+            <div class="container mx-auto px-6 text-center reveal">
+                <h1 class="text-4xl md:text-6xl font-extrabold mb-4" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.4);">Sesión 05: El Guardián de las Puertas Digitales</h1>
+                <p class="text-xl md:text-2xl max-w-3xl mx-auto" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.4);">Hoy aprenderás a gestionar las llaves del reino digital, decidiendo quién entra, a dónde y por qué.</p>
+            </div>
+        </section>
+
+        <div class="container mx-auto px-6 py-12">
+            <!-- Sección de Objetivos -->
+            <section id="objetivos" class="mb-20 p-8 bg-white rounded-xl shadow-lg reveal">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-8">Tus Tareas como Guardián</h2>
+                 <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="text-center p-6 bg-amber-50 rounded-lg">
+                        <i class="fas fa-question-circle text-4xl text-amber-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Dominar los 3 Pilares</h3>
+                        <p class="text-gray-600">Diferenciar Identificación, Autenticación y Autorización.</p>
+                    </div>
+                    <div class="text-center p-6 bg-amber-50 rounded-lg">
+                        <i class="fas fa-key text-4xl text-amber-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Aplicar la Regla de Oro</h3>
+                        <p class="text-gray-600">Implementar el Principio de Mínimo Privilegio (PoLP) en un caso real.</p>
+                    </div>
+                    <div class="text-center p-6 bg-amber-50 rounded-lg">
+                        <i class="fas fa-sitemap text-4xl text-amber-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Navegar el Directorio</h3>
+                        <p class="text-gray-600">Entender el rol de las OUs y los Grupos de Seguridad en Active Directory.</p>
+                    </div>
+                    <div class="text-center p-6 bg-amber-50 rounded-lg">
+                        <i class="fas fa-user-plus text-4xl text-amber-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Proveer Evidencia</h3>
+                        <p class="text-gray-600">Crear un usuario y documentar el proceso con evidencia auditable.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección Conceptos -->
+            <section id="conceptos" class="mb-20 p-8 bg-white rounded-xl shadow-lg reveal">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-8">Simulador: Punto de Control de Seguridad</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">Interactúa con este simulador para ver en acción los tres pilares de la gestión de accesos. Cada paso es crucial para garantizar la seguridad.</p>
+                <div class="grid md:grid-cols-3 gap-8 text-center">
+                    <!-- Identificación -->
+                    <div id="step1" class="p-6 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
+                        <h3 class="text-xl font-bold mb-4">1. Identificación</h3>
+                        <i class="fas fa-id-badge text-6xl text-gray-400 mb-4"></i>
+                        <button onclick="runStep(1)" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition">Presentar ID</button>
+                    </div>
+                    <!-- Autenticación -->
+                    <div id="step2" class="p-6 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300 opacity-50">
+                        <h3 class="text-xl font-bold mb-4">2. Autenticación</h3>
+                        <i class="fas fa-fingerprint text-6xl text-gray-400 mb-4"></i>
+                        <button onclick="runStep(2)" class="w-full bg-gray-500 text-white font-bold py-2 px-4 rounded-lg cursor-not-allowed" disabled>Verificar Identidad</button>
+                    </div>
+                    <!-- Autorización -->
+                    <div id="step3" class="p-6 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300 opacity-50">
+                        <h3 class="text-xl font-bold mb-4">3. Autorización</h3>
+                        <i class="fas fa-door-open text-6xl text-gray-400 mb-4"></i>
+                        <button onclick="runStep(3)" class="w-full bg-gray-500 text-white font-bold py-2 px-4 rounded-lg cursor-not-allowed" disabled>Consultar Permisos</button>
+                    </div>
+                </div>
+                <div id="checkpoint-result" class="mt-8 p-4 bg-gray-100 rounded-lg text-center font-semibold text-gray-500 hidden">Presiona "Presentar ID" para iniciar el proceso de verificación.</div>
+            </section>
+
+            <!-- Sección PoLP -->
+             <section id="polp" class="mb-20 p-8 bg-white rounded-xl shadow-lg reveal">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-8">La Regla de Oro: Principio de Mínimo Privilegio</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">Tu misión es asignar a Carlos Finanzas, un nuevo Analista Contable, las "llaves" correctas. Arrastra solo los permisos necesarios a su llavero. Recuerda: ni uno más, ni uno menos.</p>
+                <div class="grid md:grid-cols-2 gap-8 items-start">
+                    <div>
+                        <h3 class="font-bold text-lg mb-4 text-center">Permisos Disponibles</h3>
+                        <div id="keys-container" class="space-y-3 p-4 bg-gray-100 rounded-lg min-h-[250px]">
+                            <div draggable="true" data-key="correct" class="key-item cursor-grab bg-white p-3 rounded-lg shadow flex items-center gap-3"><i class="fas fa-file-invoice-dollar text-green-500"></i> Acceso al Sistema de Contabilidad</div>
+                            <div draggable="true" data-key="incorrect" class="key-item cursor-grab bg-white p-3 rounded-lg shadow flex items-center gap-3"><i class="fas fa-server text-red-500"></i> Administrar Servidores</div>
+                            <div draggable="true" data-key="correct" class="key-item cursor-grab bg-white p-3 rounded-lg shadow flex items-center gap-3"><i class="fas fa-folder text-green-500"></i> Acceso a Carpetas de Finanzas</div>
+                            <div draggable="true" data-key="incorrect" class="key-item cursor-grab bg-white p-3 rounded-lg shadow flex items-center gap-3"><i class="fas fa-users-cog text-red-500"></i> Gestionar Cuentas de RRHH</div>
+                        </div>
+                    </div>
+                    <div id="keychain-dropzone" class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+                        <h3 class="font-bold text-lg mb-4">Llavero de Carlos Finanzas</h3>
+                        <div class="bg-amber-100 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-4">
+                           <i class="fas fa-user-tie text-5xl text-amber-700"></i>
+                        </div>
+                        <div id="keychain-content" class="min-h-[150px] space-y-2">
+                             <p class="text-gray-500 pt-12">Arrastra los permisos aquí</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección Caso Práctico -->
+            <section id="caso-practico" class="reveal">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-2">Simulador: Creando un Usuario en Active Directory</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">Ahora, aplica todo lo aprendido en una simulación realista. Sigue las instrucciones del formulario de solicitud para crear a Carlos Finanzas. Cada clic cuenta.</p>
+
+                <div class="bg-white rounded-xl shadow-2xl p-8 flex flex-col md:flex-row gap-8">
+                    <!-- Panel Izquierdo: Árbol de OUs -->
+                    <div class="md:w-1/3 border-r pr-4">
+                        <h3 class="font-bold mb-2">globaltech.local</h3>
+                        <div class="pl-4 space-y-1">
+                            <div id="ou-ventas" onclick="selectOU('Ventas')" class="ad-tree-item"><i class="fas fa-folder text-amber-500 mr-2"></i> Ventas</div>
+                            <div id="ou-finanzas" onclick="selectOU('Finanzas')" class="ad-tree-item"><i class="fas fa-folder text-amber-500 mr-2"></i> Finanzas</div>
+                            <div id="ou-ti" onclick="selectOU('TI')" class="ad-tree-item"><i class="fas fa-folder text-amber-500 mr-2"></i> TI</div>
+                            <div id="ou-rrhh" onclick="selectOU('RRHH')" class="ad-tree-item"><i class="fas fa-folder text-amber-500 mr-2"></i> RRHH</div>
+                        </div>
+                    </div>
+                    <!-- Panel Derecho: Usuarios -->
+                    <div class="md:w-2/3">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-lg">OU: <span id="current-ou" class="text-amber-700">Ninguna seleccionada</span></h3>
+                            <button id="newUserBtn" onclick="openNewUserModal()" class="bg-green-600 text-white font-semibold py-1 px-3 rounded-lg hover:bg-green-700 transition text-sm" disabled><i class="fas fa-plus mr-1"></i> Nuevo Usuario</button>
+                        </div>
+                        <div id="user-list" class="bg-gray-50 p-4 rounded-lg min-h-[200px] border">
+                           <p class="text-gray-500">Selecciona una OU para ver los usuarios.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Sección de Cierre y Navegación -->
+            <section class="text-center mt-20 reveal">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">¡Acceso Concedido y Auditado!</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto mb-8">Has completado con éxito el alta de un usuario, aplicando controles y generando evidencia. En la próxima sesión, veremos el otro lado: la auditoría de bajas y la revisión de permisos.</p>
+                 <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                    <a href="sesion4.html" class="w-full sm:w-auto inline-block border-2 border-amber-600 text-amber-600 font-bold py-3 px-8 rounded-lg shadow-md hover:bg-amber-100 transition duration-300">
+                        <i class="fas fa-arrow-left mr-2"></i> Regresar a la Sesión 4
+                    </a>
+                    <a href="sesion6.html" class="w-full sm:w-auto inline-block bg-amber-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-amber-700 transition duration-300">
+                        Continuar a la Sesión 6 <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <!-- Modals del Simulador de AD -->
+    <!-- Formulario de Solicitud (Modal Inicial) -->
+    <div id="requestModal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 opacity-0 pointer-events-none z-50">
+        <div class="modal-content bg-white rounded-xl shadow-2xl p-8 max-w-md w-full transform scale-95">
+             <h3 class="text-xl font-bold text-center mb-4">Solicitud de Alta de Usuario</h3>
+             <div class="border p-4 rounded-lg bg-gray-50">
+                 <p><strong>ID de Ticket:</strong> RRHH-734</p>
+                 <p><strong>Nombre:</strong> Carlos Finanzas</p>
+                 <p><strong>Puesto:</strong> Analista Contable</p>
+                 <p><strong>Usuario:</strong> cfinanzas</p>
+                 <p><strong>Ubicar en OU:</strong> Finanzas</p>
+                 <p><strong>Añadir a Grupos:</strong></p>
+                 <ul class="list-disc list-inside ml-4">
+                     <li>GRP_FINANZAS_CONTABILIDAD</li>
+                     <li>GRP_ERP_ACCESO_FIN</li>
+                 </ul>
+             </div>
+             <button onclick="closeModal('requestModal')" class="mt-6 w-full bg-gray-700 text-white font-bold py-2 px-4 rounded-lg hover:bg-gray-800 transition">Entendido, empezar</button>
+        </div>
+    </div>
+    <!-- Nuevo Usuario -->
+     <div id="newUserFormModal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 opacity-0 pointer-events-none z-50">
+        <div class="modal-content bg-white rounded-xl shadow-2xl p-8 max-w-md w-full transform scale-95">
+             <h3 class="text-xl font-bold mb-4">Crear Nuevo Usuario</h3>
+             <div class="space-y-4">
+                <div><label class="block font-semibold">Nombre:</label><input id="firstNameInput" type="text" class="w-full p-2 border rounded"></div>
+                <div><label class="block font-semibold">Apellidos:</label><input id="lastNameInput" type="text" class="w-full p-2 border rounded"></div>
+                <div><label class="block font-semibold">Nombre de usuario:</label><input id="usernameInput" type="text" class="w-full p-2 border rounded"></div>
+             </div>
+             <button onclick="createUser()" class="mt-6 w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition">Crear Usuario</button>
+        </div>
+    </div>
+    <!-- Propiedades del Usuario -->
+     <div id="propertiesModal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 opacity-0 pointer-events-none z-50">
+        <div class="modal-content bg-white rounded-xl shadow-2xl p-8 max-w-lg w-full transform scale-95">
+             <h3 class="text-xl font-bold mb-4">Propiedades de: Carlos Finanzas</h3>
+             <p class="mb-4">Pestaña: <strong>Miembro de</strong></p>
+             <div class="border p-4 rounded-lg bg-gray-50 min-h-[150px]">
+                <ul id="groupList" class="list-disc list-inside">
+                    <li>Domain Users</li>
+                </ul>
+             </div>
+             <p class="font-semibold mt-4 mb-2">Añadir a los siguientes grupos:</p>
+             <div class="space-y-2">
+                 <div><input type="checkbox" id="chk-grp1" value="GRP_FINANZAS_CONTABILIDAD" class="mr-2"><label for="chk-grp1">GRP_FINANZAS_CONTABILIDAD</label></div>
+                 <div><input type="checkbox" id="chk-grp2" value="GRP_ERP_ACCESO_FIN" class="mr-2"><label for="chk-grp2">GRP_ERP_ACCESO_FIN</label></div>
+                 <div><input type="checkbox" id="chk-grp3" value="GRP_ADMINISTRADORES" class="mr-2"><label for="chk-grp3">GRP_ADMINISTRADORES</label></div>
+             </div>
+             <button onclick="assignGroups()" class="mt-6 w-full bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700 transition">Aplicar y Aceptar</button>
+        </div>
+    </div>
+    <!-- Modal de Éxito -->
+     <div id="successModal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 opacity-0 pointer-events-none z-50">
+        <div class="modal-content bg-white rounded-xl shadow-2xl p-8 max-w-md w-full transform scale-95 text-center">
+            <i class="fas fa-check-circle text-6xl text-green-500 mb-4"></i>
+            <h3 class="text-2xl font-bold text-gray-800 mb-2">¡Proceso Completado!</h3>
+            <p class="text-gray-600">Has creado el usuario y asignado los permisos correctamente, siguiendo el Principio de Mínimo Privilegio. La evidencia ha sido generada.</p>
+             <button onclick="closeModal('successModal')" class="mt-6 w-full bg-gray-700 text-white font-bold py-2 px-4 rounded-lg hover:bg-gray-800 transition">Cerrar</button>
+        </div>
+    </div>
+
+
+    <!-- ===== Footer ===== -->
+    <footer class="bg-gray-800 text-white mt-20">
+        <div class="container mx-auto px-6 py-4 text-center">
+            <p>&copy; 2025 - Unidad Didáctica: Soporte de Auditoría de TI. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- General ---
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1 });
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            setTimeout(() => modal.querySelector('.modal-content').classList.remove('scale-95'), 50);
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            modal.querySelector('.modal-content').classList.add('scale-95');
+            setTimeout(() => modal.classList.add('opacity-0', 'pointer-events-none'), 300);
+        }
+
+        // --- Simulador Checkpoint ---
+        const checkpointResult = document.getElementById('checkpoint-result');
+        function runStep(step) {
+            checkpointResult.classList.remove('hidden');
+            if (step === 1) {
+                document.getElementById('step1').classList.add('border-green-500');
+                document.getElementById('step2').classList.remove('opacity-50');
+                document.getElementById('step2').querySelector('button').disabled = false;
+                document.getElementById('step2').querySelector('button').classList.replace('bg-gray-500', 'bg-blue-600');
+                 document.getElementById('step2').querySelector('button').classList.add('hover:bg-blue-700', 'cursor-pointer');
+                checkpointResult.innerHTML = `<i class="fas fa-check-circle text-green-500 mr-2"></i>Identificación Correcta: Usuario "cfinanzas" ha presentado su ID.`;
+            } else if (step === 2) {
+                document.getElementById('step2').classList.add('border-green-500');
+                document.getElementById('step3').classList.remove('opacity-50');
+                document.getElementById('step3').querySelector('button').disabled = false;
+                document.getElementById('step3').querySelector('button').classList.replace('bg-gray-500', 'bg-blue-600');
+                 document.getElementById('step3').querySelector('button').classList.add('hover:bg-blue-700', 'cursor-pointer');
+                checkpointResult.innerHTML = `<i class="fas fa-check-circle text-green-500 mr-2"></i>Autenticación Exitosa: Contraseña verificada.`;
+            } else if (step === 3) {
+                 document.getElementById('step3').classList.add('border-green-500');
+                checkpointResult.innerHTML = `<i class="fas fa-check-circle text-green-500 mr-2"></i>Autorización Determinada: Acceso permitido a sistemas de Finanzas. Acceso denegado a RRHH y TI.`;
+            }
+        }
+        
+        // --- Simulador PoLP ---
+        const keys = document.querySelectorAll('.key-item');
+        const dropzone = document.getElementById('keychain-dropzone');
+        let draggedKey = null;
+
+        keys.forEach(key => {
+            key.addEventListener('dragstart', (e) => {
+                draggedKey = e.target;
+                setTimeout(() => e.target.style.display = 'none', 0);
+            });
+            key.addEventListener('dragend', () => {
+                setTimeout(() => {
+                    if (draggedKey) {
+                        draggedKey.style.display = 'flex';
+                        draggedKey = null;
+                    }
+                }, 0);
+            });
+        });
+
+        dropzone.addEventListener('dragover', (e) => e.preventDefault());
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            if (draggedKey) {
+                const content = document.getElementById('keychain-content');
+                if(content.querySelector('p')) content.innerHTML = ''; // Clear initial text
+                
+                const keyType = draggedKey.dataset.key;
+                if (keyType === 'correct') {
+                    draggedKey.classList.add('border-2', 'border-green-500');
+                } else {
+                    draggedKey.classList.add('border-2', 'border-red-500');
+                }
+                draggedKey.setAttribute('draggable', false);
+                draggedKey.style.cursor = 'default';
+                draggedKey.style.display = 'flex';
+                content.appendChild(draggedKey);
+                draggedKey = null;
+            }
+        });
+
+        // --- Simulador Active Directory ---
+        let adState = { selectedOU: null, userCreated: false, propertiesOpen: false };
+        const userList = document.getElementById('user-list');
+        const newUserBtn = document.getElementById('newUserBtn');
+
+        function selectOU(ouName) {
+            // Reset active state
+            document.querySelectorAll('.ad-tree-item').forEach(el => el.classList.remove('active'));
+            document.getElementById(`ou-${ouName.toLowerCase()}`).classList.add('active');
+
+            adState.selectedOU = ouName;
+            document.getElementById('current-ou').textContent = ouName;
+            userList.innerHTML = `<p class="text-gray-500">La OU "${ouName}" está actualmente vacía.</p>`;
+            newUserBtn.disabled = false;
+            
+            if (ouName.toLowerCase() === 'finanzas') {
+                openModal('requestModal');
+            }
+        }
+
+        function openNewUserModal() {
+            if (adState.selectedOU.toLowerCase() !== 'finanzas') {
+                alert('Según la solicitud, debes crear el usuario en la OU "Finanzas".');
+                return;
+            }
+            openModal('newUserFormModal');
+        }
+
+        function createUser() {
+            const firstName = document.getElementById('firstNameInput').value;
+            const lastName = document.getElementById('lastNameInput').value;
+            const username = document.getElementById('usernameInput').value;
+
+            if (firstName.toLowerCase() === 'carlos' && lastName.toLowerCase() === 'finanzas' && username.toLowerCase() === 'cfinanzas') {
+                adState.userCreated = true;
+                userList.innerHTML = `<div onclick="openPropertiesModal()" class="ad-user-item cursor-pointer"><i class="fas fa-user text-xl text-gray-500"></i><div><p class="font-semibold">Carlos Finanzas</p><p class="text-sm text-gray-500">cfinanzas</p></div></div>`;
+                closeModal('newUserFormModal');
+            } else {
+                alert('Los datos no coinciden con la solicitud. ¡Revisa el formulario!');
+            }
+        }
+        
+        function openPropertiesModal() {
+            if (adState.userCreated) {
+                openModal('propertiesModal');
+            }
+        }
+
+        function assignGroups() {
+            const chk1 = document.getElementById('chk-grp1').checked;
+            const chk2 = document.getElementById('chk-grp2').checked;
+            const chk3 = document.getElementById('chk-grp3').checked; // Admin group
+
+            if (chk1 && chk2 && !chk3) {
+                closeModal('propertiesModal');
+                openModal('successModal');
+            } else if (chk1 && chk2 && chk3) {
+                 alert('Error: Has asignado privilegios excesivos. Revisa el Principio de Mínimo Privilegio.');
+            } else {
+                 alert('Error: No has asignado todos los grupos requeridos. Revisa la solicitud.');
+            }
+        }
+
+    </script>
+
+</body>
+</html>
