@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 7: SoD y Operaciones de TI</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .corp-gradient {
+            background: linear-gradient(135deg, #1e3a8a, #f59e0b, #374151);
+            background-size: 250% 250%;
+            animation: gradient-animation 20s ease infinite;
+        }
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Estilos para la Matriz SoD */
+        .sod-cell {
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+        .sod-cell.selected {
+            background-color: #fef9c3; /* yellow-100 */
+            outline: 2px solid #f59e0b; /* amber-500 */
+        }
+        .sod-cell.conflict {
+             background-color: #fee2e2; /* red-100 */
+        }
+        .sod-cell.correct {
+            background-color: #dcfce7; /* green-100 */
+        }
+        .hidden-explanation {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        .hidden-explanation.visible {
+            display: block;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-gray-900">
+
+    <!-- ===== Header y Navegación ===== -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-gray-800">
+                <i class="fas fa-shield-alt text-blue-700"></i>
+                Soporte de Auditoría TI
+            </div>
+            <div class="hidden md:flex space-x-6">
+                <a href="#objetivos" class="text-gray-600 hover:text-blue-700 transition duration-300">Objetivos</a>
+                <a href="#sod" class="text-gray-600 hover:text-blue-700 transition duration-300">SoD</a>
+                <a href="#operaciones" class="text-gray-600 hover:text-blue-700 transition duration-300">Operaciones</a>
+                <a href="#caso-practico" class="text-gray-600 hover:text-blue-700 transition duration-300">Análisis</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ===== Contenido Principal ===== -->
+    <main>
+
+        <!-- Sección Hero -->
+        <section class="corp-gradient text-white py-20 md:py-32">
+            <div class="container mx-auto px-6 text-center reveal">
+                <h1 class="text-4xl md:text-6xl font-extrabold mb-4" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.4);">Sesión 07: Anti-Fraude y Continuidad del Negocio</h1>
+                <p class="text-xl md:text-2xl max-w-3xl mx-auto" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.4);">Hoy te pones dos sombreros: el de detective anti-fraude y el de guardián de la supervivencia de la empresa.</p>
+            </div>
+        </section>
+
+        <div class="container mx-auto px-6 py-12">
+            <!-- Sección de Objetivos -->
+            <section id="objetivos" class="mb-20 p-8 bg-white rounded-xl shadow-lg reveal">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-8">Tus Dos Misiones Críticas</h2>
+                 <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="text-center p-6 bg-blue-50 rounded-lg">
+                        <i class="fas fa-user-secret text-4xl text-blue-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Prevenir Fraudes (SoD)</h3>
+                        <p class="text-gray-600">Entender por qué una sola persona no puede tener todas las "llaves de la bóveda".</p>
+                    </div>
+                    <div class="text-center p-6 bg-blue-50 rounded-lg">
+                        <i class="fas fa-exclamation-triangle text-4xl text-blue-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Identificar "Combinaciones Tóxicas"</h3>
+                        <p class="text-gray-600">Analizar una matriz de permisos para encontrar riesgos de fraude o error.</p>
+                    </div>
+                    <div class="text-center p-6 bg-amber-50 rounded-lg">
+                        <i class="fas fa-life-ring text-4xl text-amber-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Asegurar la Continuidad</h3>
+                        <p class="text-gray-600">Conocer los controles clave de operaciones: backups y monitoreo.</p>
+                    </div>
+                    <div class="text-center p-6 bg-amber-50 rounded-lg">
+                        <i class="fas fa-history text-4xl text-amber-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Entender RPO y RTO</h3>
+                        <p class="text-gray-600">Saber cuánto tiempo y cuántos datos una empresa puede permitirse perder.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección SoD -->
+            <section id="sod" class="mb-20 p-8 bg-white rounded-xl shadow-lg reveal">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-8">Segregación de Funciones (SoD): "Nunca le des todas las llaves a una sola persona"</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">Este control previene fraudes dividiendo las tareas críticas. Explora la analogía de la bóveda del banco para entenderlo.</p>
+                <div class="flex flex-col md:flex-row items-center justify-center gap-8 text-center">
+                    <!-- Personas -->
+                    <div class="flex gap-8">
+                        <div>
+                            <i id="person1" class="fas fa-user text-6xl text-gray-400 transition-colors duration-500"></i>
+                            <p class="font-bold mt-2">Gerente A</p>
+                            <i id="key1" class="fas fa-key text-4xl text-gray-400 mt-2 transition-transform duration-500"></i>
+                        </div>
+                        <div>
+                            <i id="person2" class="fas fa-user text-6xl text-gray-400 transition-colors duration-500"></i>
+                            <p class="font-bold mt-2">Gerente B</p>
+                            <i id="key2" class="fas fa-key text-4xl text-gray-400 mt-2 transition-transform duration-500"></i>
+                        </div>
+                    </div>
+                    <!-- Bóveda -->
+                    <div class="mx-8">
+                        <i id="vault" class="fas fa-door-closed text-9xl text-gray-700 transition-all duration-500"></i>
+                    </div>
+                    <!-- Botón -->
+                    <div>
+                        <button id="openVaultBtn" onclick="toggleVault()" class="bg-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 transition-transform hover:scale-105">Intentar Abrir Bóveda</button>
+                        <p id="vaultStatus" class="mt-4 font-semibold text-red-600">La bóveda está cerrada. Se requieren ambas llaves.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección Operaciones -->
+            <section id="operaciones" class="mb-20 p-8 bg-white rounded-xl shadow-lg reveal">
+                 <h2 class="text-3xl font-bold text-center text-gray-900 mb-8">Operaciones de TI: El Seguro y las Alarmas</h2>
+                 <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">Si SoD previene los problemas internos, las Operaciones de TI aseguran que la empresa sobreviva a los desastres externos e internos. Interactúa con el dashboard de continuidad.</p>
+                <div class="grid md:grid-cols-3 gap-8 text-center">
+                    <div class="bg-amber-50 p-6 rounded-lg">
+                        <h3 class="font-bold text-xl mb-2">RPO (Recovery Point Objective)</h3>
+                        <p class="text-sm text-gray-500 mb-4">¿Cuántos datos podemos perder?</p>
+                        <div class="text-4xl font-extrabold text-amber-600 mb-2">24 Horas</div>
+                        <p class="text-gray-600">Esto significa que necesitamos hacer **backups diarios** para no perder más de un día de trabajo.</p>
+                    </div>
+                    <div class="bg-amber-50 p-6 rounded-lg">
+                        <h3 class="font-bold text-xl mb-2">RTO (Recovery Time Objective)</h3>
+                        <p class="text-sm text-gray-500 mb-4">¿Cuánto tiempo podemos estar "caídos"?</p>
+                         <div class="text-4xl font-extrabold text-amber-600 mb-2">4 Horas</div>
+                         <p class="text-gray-600">Debemos ser capaces de **restaurar todo** el sistema en menos de 4 horas tras un desastre.</p>
+                    </div>
+                    <div class="bg-amber-50 p-6 rounded-lg">
+                        <h3 class="font-bold text-xl mb-2">Regla de Backup 3-2-1</h3>
+                        <p class="text-sm text-gray-500 mb-4">La receta para un backup a prueba de fallos.</p>
+                        <div class="flex justify-around items-center h-24">
+                            <span class="text-3xl font-bold text-amber-600"><i class="fas fa-copy"></i> 3 <span class="text-sm font-normal">Copias</span></span>
+                            <span class="text-3xl font-bold text-amber-600"><i class="fas fa-hdd"></i> 2 <span class="text-sm font-normal">Medios</span></span>
+                            <span class="text-3xl font-bold text-amber-600"><i class="fas fa-cloud"></i> 1 <span class="text-sm font-normal">Externa</span></span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Caso Práctico -->
+            <section id="caso-practico" class="reveal">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-2">Análisis de Matriz de Segregación de Funciones (SoD)</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-4xl mx-auto">Un auditor te ha entregado esta matriz de permisos del ERP. Tu misión es hacer clic en los roles que presenten "Combinaciones Tóxicas" y explicar el riesgo.</p>
+
+                <div class="bg-white rounded-xl shadow-2xl p-8">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-slate-100">
+                                    <th class="p-3 font-semibold border">Rol de Usuario</th>
+                                    <th class="p-3 font-semibold border text-center">Crear Proveedor</th>
+                                    <th class="p-3 font-semibold border text-center">Registrar Factura</th>
+                                    <th class="p-3 font-semibold border text-center">Generar Propuesta Pago</th>
+                                    <th class="p-3 font-semibold border text-center">Aprobar Pagos</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="rol-analista" onclick="selectRole('analista')" class="cursor-pointer hover:bg-slate-50">
+                                    <td class="p-3 border font-bold">Analista de Compras</td>
+                                    <td class="p-3 border text-center text-xl">✅</td>
+                                    <td class="p-3 border text-center"></td>
+                                    <td class="p-3 border text-center"></td>
+                                    <td class="p-3 border text-center"></td>
+                                </tr>
+                                <tr id="rol-asistente" onclick="selectRole('asistente')" class="cursor-pointer hover:bg-slate-50">
+                                    <td class="p-3 border font-bold">Asistente de Tesorería</td>
+                                    <td class="p-3 border text-center"></td>
+                                    <td class="p-3 border text-center text-xl">✅</td>
+                                    <td class="p-3 border text-center text-xl">✅</td>
+                                    <td class="p-3 border text-center"></td>
+                                </tr>
+                                <tr id="rol-jefe" onclick="selectRole('jefe')" class="cursor-pointer hover:bg-slate-50">
+                                    <td class="p-3 border font-bold">Jefe de Contabilidad</td>
+                                    <td class="p-3 border text-center text-xl">✅</td>
+                                    <td class="p-3 border text-center"></td>
+                                    <td class="p-3 border text-center text-xl">✅</td>
+                                    <td class="p-3 border text-center text-xl">✅</td>
+                                </tr>
+                                <tr id="rol-gerente" onclick="selectRole('gerente')" class="cursor-pointer hover:bg-slate-50">
+                                    <td class="p-3 border font-bold">Gerente de Finanzas</td>
+                                    <td class="p-3 border text-center"></td>
+                                    <td class="p-3 border text-center"></td>
+                                    <td class="p-3 border text-center"></td>
+                                    <td class="p-3 border text-center text-xl">✅</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="explanation-box" class="mt-8 p-4 bg-gray-100 rounded-lg">
+                        <h4 class="font-bold text-lg">Análisis de Riesgo:</h4>
+                        <p id="explanation-text" class="mt-2 text-gray-700">Selecciona un rol de la tabla para analizar sus permisos.</p>
+                        
+                        <div id="exp-analista" class="hidden-explanation">Rol sin conflictos de SoD. El "Analista de Compras" puede crear proveedores, pero no puede generar ni aprobar pagos para ellos. Las funciones están correctamente segregadas.</div>
+                        <div id="exp-asistente" class="hidden-explanation">Rol sin conflictos de SoD. El "Asistente de Tesorería" puede registrar facturas y preparar pagos, pero necesita que un superior los apruebe. Las funciones están correctamente segregadas.</div>
+                        <div id="exp-jefe" class="hidden-explanation text-red-700 font-semibold">¡CONFLICTO DE SoD ENCONTRADO! El "Jefe de Contabilidad" tiene una combinación tóxica. Puede crear un proveedor, generar una propuesta de pago para ese proveedor y, lo más crítico, aprobar ese mismo pago. <br><strong>Escenario de Fraude:</strong> Podría crear un proveedor fantasma (ej. un familiar), generar facturas falsas a nombre de ese proveedor y autorizar los pagos, desviando fondos de la compañía sin necesidad de un cómplice.</div>
+                        <div id="exp-gerente" class="hidden-explanation">Rol sin conflictos de SoD. El "Gerente de Finanzas" tiene la autoridad final para aprobar pagos, pero no puede crear proveedores ni generar las propuestas de pago, actuando como un control de supervisión independiente.</div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Cierre y Navegación -->
+            <section class="text-center mt-20 reveal">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Controles Críticos Dominados</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto mb-8">Has aprendido a identificar riesgos de fraude y a entender los pilares de la continuidad del negocio. En la próxima sesión, auditaremos el corazón de la infraestructura: los sistemas operativos.</p>
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                    <a href="sesion6.html" class="w-full sm:w-auto inline-block border-2 border-blue-600 text-blue-600 font-bold py-3 px-8 rounded-lg shadow-md hover:bg-blue-100 transition duration-300">
+                        <i class="fas fa-arrow-left mr-2"></i> Regresar a la Sesión 6
+                    </a>
+                    <a href="sesion8.html" class="w-full sm:w-auto inline-block bg-blue-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-blue-700 transition duration-300">
+                        Continuar a la Sesión 8 <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white mt-20">
+        <div class="container mx-auto px-6 py-4 text-center">
+            <p>&copy; 2025 - Unidad Didáctica: Soporte de Auditoría de TI. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- General ---
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1 });
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // --- Simulador Bóveda SoD ---
+        let vaultOpen = false;
+        const vaultBtn = document.getElementById('openVaultBtn');
+        const vaultStatus = document.getElementById('vaultStatus');
+        const vaultIcon = document.getElementById('vault');
+        const p1 = document.getElementById('person1');
+        const p2 = document.getElementById('person2');
+        const k1 = document.getElementById('key1');
+        const k2 = document.getElementById('key2');
+
+        function toggleVault() {
+            vaultOpen = !vaultOpen;
+            if (vaultOpen) {
+                vaultBtn.textContent = "Cerrar Bóveda";
+                vaultStatus.textContent = "¡Bóveda abierta! Ambas llaves fueron presentadas.";
+                vaultStatus.classList.replace('text-red-600', 'text-green-600');
+                vaultIcon.classList.replace('fa-door-closed', 'fa-door-open');
+                vaultIcon.classList.replace('text-gray-700', 'text-amber-500');
+                p1.classList.replace('text-gray-400', 'text-blue-600');
+                p2.classList.replace('text-gray-400', 'text-blue-600');
+                k1.classList.add('rotate-90', 'text-amber-500');
+                k2.classList.add('-rotate-90', 'text-amber-500');
+            } else {
+                vaultBtn.textContent = "Intentar Abrir Bóveda";
+                vaultStatus.textContent = "La bóveda está cerrada. Se requieren ambas llaves.";
+                vaultStatus.classList.replace('text-green-600', 'text-red-600');
+                vaultIcon.classList.replace('fa-door-open', 'fa-door-closed');
+                 vaultIcon.classList.replace('text-amber-500', 'text-gray-700');
+                p1.classList.replace('text-blue-600', 'text-gray-400');
+                p2.classList.replace('text-blue-600', 'text-gray-400');
+                k1.classList.remove('rotate-90', 'text-amber-500');
+                k2.classList.remove('-rotate-90', 'text-amber-500');
+            }
+        }
+
+        // --- Matriz SoD ---
+        const roles = ['analista', 'asistente', 'jefe', 'gerente'];
+        
+        function selectRole(roleId) {
+            // Reset visual state
+            roles.forEach(r => {
+                const row = document.getElementById(`rol-${r}`);
+                row.classList.remove('bg-yellow-100', 'outline', 'outline-2', 'outline-amber-500');
+                document.getElementById(`exp-${r}`).classList.remove('visible');
+            });
+            
+            // Set active state
+            const selectedRow = document.getElementById(`rol-${roleId}`);
+            selectedRow.classList.add('bg-yellow-100', 'outline', 'outline-2', 'outline-amber-500');
+            
+            // Show explanation
+            document.getElementById('explanation-text').style.display = 'none';
+            document.getElementById(`exp-${roleId}`).classList.add('visible');
+        }
+
+    </script>
+
+</body>
+</html>
+
