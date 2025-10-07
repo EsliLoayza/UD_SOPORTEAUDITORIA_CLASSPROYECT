@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 10: Auditoría a la Fortaleza de Datos</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .datacenter-gradient {
+            background: linear-gradient(135deg, #1e3a8a, #f59e0b, #111827);
+            background-size: 250% 250%;
+            animation: gradient-animation 20s ease infinite;
+        }
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Estilos para Tiers */
+        .tier-card {
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        .tier-card.active, .tier-card:hover {
+            transform: translateY(-5px);
+            border-color: #f59e0b; /* amber-500 */
+        }
+        /* Estilos para Checklist */
+        .checklist-row:hover {
+            background-color: #f1f5f9; /* slate-100 */
+        }
+        .justify-input {
+            transition: border-color 0.3s;
+        }
+        .justify-input:focus {
+            border-color: #3b82f6; /* blue-500 */
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-gray-900">
+
+    <!-- ===== Header y Navegación ===== -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-gray-800">
+                <i class="fas fa-server text-blue-700"></i>
+                Soporte de Auditoría TI
+            </div>
+            <div class="hidden md:flex space-x-6">
+                <a href="#objetivos" class="text-gray-600 hover:text-blue-700 transition duration-300">Objetivos</a>
+                <a href="#tiers" class="text-gray-600 hover:text-blue-700 transition duration-300">Tiers</a>
+                <a href="#defensas" class="text-gray-600 hover:text-blue-700 transition duration-300">Defensas</a>
+                <a href="#caso-practico" class="text-gray-600 hover:text-blue-700 transition duration-300">Checklist</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ===== Contenido Principal ===== -->
+    <main>
+
+        <!-- Sección Hero -->
+        <section class="datacenter-gradient text-white py-20 md:py-32">
+            <div class="container mx-auto px-6 text-center reveal">
+                <h1 class="text-4xl md:text-6xl font-extrabold mb-4" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.4);">Sesión 10: Auditando la Fortaleza de los Datos</h1>
+                <p class="text-xl md:text-2xl max-w-3xl mx-auto" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.4);">Hoy dejas el teclado y te pones el casco de inspector para auditar el corazón físico de la tecnología: el Centro de Datos.</p>
+            </div>
+        </section>
+
+        <div class="container mx-auto px-6 py-12">
+            <!-- Sección de Objetivos -->
+            <section id="objetivos" class="mb-20 p-8 bg-white rounded-xl shadow-lg reveal">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-8">Habilidades del Inspector de la Fortaleza</h2>
+                 <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="text-center p-6 bg-blue-50 rounded-lg">
+                        <i class="fas fa-layer-group text-4xl text-blue-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Clasificar Fortalezas</h3>
+                        <p class="text-gray-600">Entender los 4 niveles (Tiers) de disponibilidad de un Data Center según TIA-942.</p>
+                    </div>
+                    <div class="text-center p-6 bg-blue-50 rounded-lg">
+                        <i class="fas fa-shield-alt text-4xl text-blue-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Evaluar las 4 Defensas</h3>
+                        <p class="text-gray-600">Identificar los controles clave de Acceso, Clima, Incendios y Energía.</p>
+                    </div>
+                    <div class="text-center p-6 bg-blue-50 rounded-lg">
+                        <i class="fas fa-search-location text-4xl text-blue-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Desarrollar Ojo Crítico</h3>
+                        <p class="text-gray-600">Observar un entorno y detectar conformidades y no conformidades físicas.</p>
+                    </div>
+                    <div class="text-center p-6 bg-blue-50 rounded-lg">
+                        <i class="fas fa-pen-alt text-4xl text-blue-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Justificar Hallazgos</h3>
+                        <p class="text-gray-600">Documentar tus observaciones de forma clara y profesional en un checklist.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección Tiers -->
+            <section id="tiers" class="mb-20 p-8 bg-white rounded-xl shadow-lg reveal">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-8">Los 4 Niveles de una Fortaleza (Estándar TIA-942)</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">No todos los Data Centers son iguales. Su nivel (Tier) define su resistencia a fallos. Haz clic en cada Tier para ver su nivel de redundancia.</p>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <div id="tier1" onclick="selectTier(1)" class="tier-card p-4 bg-slate-100 rounded-lg text-center border-b-4 border-gray-300 cursor-pointer">
+                        <h3 class="font-bold text-lg">Tier I</h3><p class="text-sm">Básico</p>
+                    </div>
+                    <div id="tier2" onclick="selectTier(2)" class="tier-card p-4 bg-slate-100 rounded-lg text-center border-b-4 border-gray-300 cursor-pointer">
+                        <h3 class="font-bold text-lg">Tier II</h3><p class="text-sm">Componentes Redundantes</p>
+                    </div>
+                    <div id="tier3" onclick="selectTier(3)" class="tier-card p-4 bg-slate-100 rounded-lg text-center border-b-4 border-gray-300 cursor-pointer">
+                        <h3 class="font-bold text-lg">Tier III</h3><p class="text-sm">Mant. Concurrente</p>
+                    </div>
+                    <div id="tier4" onclick="selectTier(4)" class="tier-card p-4 bg-slate-100 rounded-lg text-center border-b-4 border-gray-300 cursor-pointer">
+                        <h3 class="font-bold text-lg">Tier IV</h3><p class="text-sm">Tolerante a Fallos</p>
+                    </div>
+                </div>
+                <div class="bg-amber-50 p-6 rounded-lg">
+                    <div id="tier-detail-1" class="tier-detail-content">
+                        <h4 class="font-bold text-xl text-amber-700">Tier I: Básico</h4>
+                        <p>No tiene redundancia. Si un componente falla (ej. el aire acondicionado), todo el Data Center se detiene. Es un "castillo con un solo pozo de agua".</p>
+                    </div>
+                    <div id="tier-detail-2" class="tier-detail-content hidden">
+                        <h4 class="font-bold text-xl text-amber-700">Tier II: Componentes Redundantes</h4>
+                        <p>Tiene redundancia N+1 en algunos componentes. Si falla el aire acondicionado principal, hay uno de respaldo. Es un "castillo con un pozo de emergencia".</p>
+                    </div>
+                    <div id="tier-detail-3" class="tier-detail-content hidden">
+                        <h4 class="font-bold text-xl text-amber-700">Tier III: Mantenimiento Concurrente</h4>
+                        <p>Permite dar mantenimiento a cualquier componente sin apagar los servidores. Tiene múltiples caminos de energía y enfriamiento. "Puedes reparar un pozo sin que nadie se quede sin agua".</p>
+                    </div>
+                    <div id="tier-detail-4" class="tier-detail-content hidden">
+                        <h4 class="font-bold text-xl text-amber-700">Tier IV: Tolerante a Fallos</h4>
+                        <p>Máxima disponibilidad. Puede soportar un fallo grave en cualquier componente sin afectar las operaciones. "Resiste el ataque de un dragón sin que nadie dentro se dé cuenta".</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Sección Defensas -->
+            <section id="defensas" class="mb-20 reveal">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">Las 4 Defensas Clave que un Auditor Revisa</h2>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="font-bold text-xl mb-3 flex items-center gap-3"><i class="fas fa-id-card text-2xl text-blue-600"></i>Acceso Físico</h3>
+                        <p>Muros y guardias. Se busca control multi-factor (tarjeta + biometría), esclusas (mantraps) y que todo (racks, cableado) esté asegurado y ordenado.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="font-bold text-xl mb-3 flex items-center gap-3"><i class="fas fa-thermometer-half text-2xl text-blue-600"></i>Controles Ambientales</h3>
+                        <p>El clima interno. Se verifica la limpieza, sistemas de climatización de precisión (HVAC) y monitoreo constante de temperatura y humedad para evitar daños.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="font-bold text-xl mb-3 flex items-center gap-3"><i class="fas fa-fire-extinguisher text-2xl text-blue-600"></i>Supresión de Incendios</h3>
+                        <p>El sistema anti-dragones. Se busca supresión por agentes limpios (gases) que no dañan los equipos, y la presencia de extintores de CO2 correctos.</p>
+                    </div>
+                     <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="font-bold text-xl mb-3 flex items-center gap-3"><i class="fas fa-bolt text-2xl text-blue-600"></i>Suministro de Energía</h3>
+                        <p>La sangre de la fortaleza. Se audita la existencia de UPS (baterías), Grupos Electrógenos (generadores) y PDUs profesionales en los racks.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Caso Práctico -->
+            <section id="caso-practico" class="reveal">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-2">Checklist Interactivo para Auditoría de Data Center</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-4xl mx-auto">Observa la imagen del Data Center de "Global Tech S.A.". Luego, completa el checklist marcando si cada punto es una **Conformidad (C)** o una **No Conformidad (NC)** y justifica brevemente tu hallazgo.</p>
+
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <!-- Imagen de Observación -->
+                    <div class="bg-white p-4 rounded-xl shadow-2xl">
+                        <h3 class="font-bold text-center mb-4">Evidencia Visual: Data Center "Global Tech"</h3>
+                                                <p class="text-xs text-center text-gray-500 mt-2">Observa los detalles: cableado, puertas de racks, limpieza, extintores, etc.</p>
+                    </div>
+                    
+                    <!-- Checklist Interactivo -->
+                    <div class="bg-white rounded-xl shadow-2xl p-6">
+                         <h3 class="font-bold text-center mb-4">Checklist de Auditoría</h3>
+                         <div class="space-y-4">
+                            <!-- Item 1 -->
+                            <div class="checklist-row border-b pb-3">
+                                <p><strong>1. ¿Las puertas de los gabinetes/racks están cerradas con llave?</strong></p>
+                                <div class="flex gap-4 mt-2">
+                                    <label class="flex items-center"><input type="radio" name="q1" value="C" class="mr-2"> C</label>
+                                    <label class="flex items-center"><input type="radio" name="q1" value="NC" class="mr-2"> NC</label>
+                                </div>
+                                <input type="text" placeholder="Justificación..." class="w-full mt-2 p-1 border rounded-md justify-input">
+                            </div>
+                             <!-- Item 2 -->
+                            <div class="checklist-row border-b pb-3">
+                                <p><strong>2. ¿La sala está limpia y libre de objetos combustibles (cajas, papel)?</strong></p>
+                                <div class="flex gap-4 mt-2">
+                                    <label class="flex items-center"><input type="radio" name="q2" value="C" class="mr-2"> C</label>
+                                    <label class="flex items-center"><input type="radio" name="q2" value="NC" class="mr-2"> NC</label>
+                                </div>
+                                <input type="text" placeholder="Justificación..." class="w-full mt-2 p-1 border rounded-md justify-input">
+                            </div>
+                            <!-- Item 3 -->
+                            <div class="checklist-row">
+                                <p><strong>3. ¿Los racks tienen PDUs profesionales y no regletas de uso doméstico?</strong></p>
+                                <div class="flex gap-4 mt-2">
+                                    <label class="flex items-center"><input type="radio" name="q3" value="C" class="mr-2"> C</label>
+                                    <label class="flex items-center"><input type="radio" name="q3" value="NC" class="mr-2"> NC</label>
+                                </div>
+                                <input type="text" placeholder="Justificación..." class="w-full mt-2 p-1 border rounded-md justify-input">
+                            </div>
+                         </div>
+                         <button onclick="submitChecklist()" class="mt-8 w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 transition">Enviar Checklist al Auditor</button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Cierre y Navegación -->
+            <section class="text-center mt-20 reveal">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Inspección Completada</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto mb-8">Has aprendido a evaluar la seguridad física, la base sobre la que se construye toda la seguridad lógica. En la próxima sesión, volveremos al software para auditar los sistemas operativos.</p>
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                    <a href="sesion9.html" class="w-full sm:w-auto inline-block border-2 border-blue-600 text-blue-600 font-bold py-3 px-8 rounded-lg shadow-md hover:bg-blue-100 transition duration-300">
+                        <i class="fas fa-arrow-left mr-2"></i> Regresar a la Sesión 9
+                    </a>
+                    <a href="sesion11.html" class="w-full sm:w-auto inline-block bg-blue-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-blue-700 transition duration-300">
+                        Continuar a la Sesión 11 <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white mt-20">
+        <div class="container mx-auto px-6 py-4 text-center">
+            <p>&copy; 2025 - Unidad Didáctica: Soporte de Auditoría de TI. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- General ---
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1 });
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // --- Tiers ---
+        function selectTier(tierNum) {
+            // Ocultar todos los detalles
+            document.querySelectorAll('.tier-detail-content').forEach(el => el.classList.add('hidden'));
+            // Mostrar el detalle seleccionado
+            document.getElementById(`tier-detail-${tierNum}`).classList.remove('hidden');
+
+            // Actualizar estado activo visual de las tarjetas
+            document.querySelectorAll('.tier-card').forEach(card => card.classList.remove('active'));
+            document.getElementById(`tier${tierNum}`).classList.add('active');
+        }
+        // Activar el Tier 1 por defecto
+        document.addEventListener('DOMContentLoaded', () => selectTier(1));
+        
+        // --- Checklist ---
+        function submitChecklist() {
+            // En una aplicación real, aquí se recolectarían los datos y se enviarían.
+            // Para este simulador, simplemente damos feedback.
+            
+            // Lógica simple de validación
+            const q1 = document.querySelector('input[name="q1"]:checked');
+            const q2 = document.querySelector('input[name="q2"]:checked');
+            const q3 = document.querySelector('input[name="q3"]:checked');
+            
+            if (!q1 || !q2 || !q3) {
+                alert("Por favor, completa todos los puntos del checklist antes de enviar.");
+                return;
+            }
+
+            // Lógica de feedback (se asumen respuestas correctas para el ejemplo)
+            // En la imagen de ejemplo se vería: rack abierto (NC), cajas (NC), PDUs correctas (C)
+            let score = 0;
+            if (q1.value === 'NC') score++;
+            if (q2.value === 'NC') score++;
+            if (q3.value === 'C') score++;
+
+            alert(`Checklist enviado. Has identificado correctamente ${score} de 3 puntos clave. Tu reporte ha sido generado para el informe de auditoría.`);
+        }
+
+    </script>
+
+</body>
+</html>
