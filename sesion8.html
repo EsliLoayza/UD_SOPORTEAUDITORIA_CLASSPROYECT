@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 8: Evaluación Parcial - Caso de Estudio Integrador</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter & Fira Code -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .font-code {
+            font-family: 'Fira Code', monospace;
+        }
+        .exam-gradient {
+            background: linear-gradient(135deg, #1e3a8a, #f59e0b, #374151);
+            background-size: 250% 250%;
+            animation: gradient-animation 20s ease infinite;
+        }
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .task-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .task-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+        }
+        .option-btn {
+            transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+        }
+        .option-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        .correct-answer {
+            background-color: #dcfce7; /* green-100 */
+            border-color: #22c55e; /* green-500 */
+            color: #15803d; /* green-700 */
+            font-weight: bold;
+        }
+        .incorrect-answer {
+            background-color: #fee2e2; /* red-100 */
+            border-color: #ef4444; /* red-500 */
+            color: #b91c1c; /* red-700 */
+        }
+         /* Estilos para el modal */
+        .modal {
+            transition: opacity 0.3s ease;
+        }
+        .modal-content {
+            transition: transform 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-gray-900">
+
+    <!-- ===== Header y Navegación ===== -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-gray-800">
+                <i class="fas fa-clipboard-list text-amber-600"></i>
+                Soporte de Auditoría TI
+            </div>
+            <div class="hidden md:flex space-x-6">
+                <a href="#briefing" class="text-gray-600 hover:text-amber-600 transition duration-300">Briefing</a>
+                <a href="#dashboard" class="text-gray-600 hover:text-amber-600 transition duration-300">Dashboard</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ===== Contenido Principal ===== -->
+    <main>
+
+        <!-- Sección Hero -->
+        <section class="exam-gradient text-white py-20 md:py-32">
+            <div class="container mx-auto px-6 text-center reveal">
+                <h1 class="text-4xl md:text-6xl font-extrabold mb-4" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.4);">Sesión 08: Evaluación Parcial Práctica</h1>
+                <p class="text-xl md:text-2xl max-w-3xl mx-auto" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.4);">Tu primera misión de auditoría ha comenzado. Demuestra tus habilidades analizando este caso de estudio integrador.</p>
+            </div>
+        </section>
+
+        <div class="container mx-auto px-6 py-12">
+            <!-- Sección de Briefing -->
+            <section id="briefing" class="mb-20 p-8 bg-white rounded-xl shadow-lg reveal">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-8">Memorándum de Auditoría</h2>
+                <div class="max-w-3xl mx-auto bg-amber-50 border-l-4 border-amber-500 text-amber-800 p-6 rounded-r-lg">
+                    <p class="font-bold">PARA:</Analista Junior de Soporte de Auditoría (Tú)</p>
+                    <p class="font-bold">DE:</Sr. Reyes, Auditor Senior</p>
+                    <p class="font-bold">ASUNTO:</Caso de Estudio: Revisión de Controles Generales en "Global Tech S.A."</p>
+                    <hr class="my-3 border-amber-300">
+                    <p>Bienvenido a tu primera asignación. He preparado un dashboard con cinco tareas de revisión basadas en hallazgos preliminares. Tu misión es analizar cada caso, identificar las debilidades de control y seleccionar la conclusión correcta.</p>
+                    <p class="mt-2">Tu análisis es crucial para nuestro informe final. Procede con diligencia y atención al detalle. Confío en tu criterio.</p>
+                </div>
+            </section>
+            
+            <!-- Dashboard de Auditoría -->
+            <section id="dashboard" class="reveal">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">Dashboard de Tareas de Auditoría</h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <!-- Tarea 1: SoD -->
+                    <div class="task-card bg-white p-6 rounded-lg shadow-md flex flex-col">
+                        <h3 class="font-bold text-xl mb-3 flex items-center gap-3"><i class="fas fa-user-secret text-red-600"></i> Tarea 1: Segregación de Funciones</h3>
+                        <p class="text-gray-600 mb-4 flex-grow">Al revisar el ERP, se encuentra que el usuario `jcontabilidad` puede crear proveedores y también autorizar pagos. ¿Qué representa esto?</p>
+                        <div class="space-y-2">
+                            <button data-task="1" data-correct="false" onclick="selectAnswer(this)" class="option-btn w-full text-left p-3 border rounded-md">Un control de operaciones normal.</button>
+                            <button data-task="1" data-correct="true" onclick="selectAnswer(this)" class="option-btn w-full text-left p-3 border rounded-md">Una "combinación tóxica" que viola SoD.</button>
+                            <button data-task="1" data-correct="false" onclick="selectAnswer(this)" class="option-btn w-full text-left p-3 border rounded-md">Una falta en el plan de Rollback.</button>
+                        </div>
+                    </div>
+
+                    <!-- Tarea 2: Integridad de Evidencia -->
+                     <div class="task-card bg-white p-6 rounded-lg shadow-md flex flex-col">
+                        <h3 class="font-bold text-xl mb-3 flex items-center gap-3"><i class="fas fa-fingerprint text-blue-600"></i> Tarea 2: Integridad de Evidencia</h3>
+                        <p class="text-gray-600 mb-4 flex-grow">Se te entrega un archivo de logs y se te informa que su hash SHA-256 original era `a1b2...c3d4`. Al recalcularlo, obtienes `e5f6...g7h8`. ¿Qué concluyes?</p>
+                        <div class="space-y-2">
+                            <button data-task="2" data-correct="true" onclick="selectAnswer(this)" class="option-btn w-full text-left p-3 border rounded-md">La evidencia fue alterada y no es fiable.</button>
+                            <button data-task="2" data-correct="false" onclick="selectAnswer(this)" class="option-btn w-full text-left p-3 border rounded-md">El algoritmo de hash es incorrecto.</button>
+                            <button data-task="2" data-correct="false" onclick="selectAnswer(this)" class="option-btn w-full text-left p-3 border rounded-md">La evidencia es suficiente y relevante.</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Tarea 3: Gestión de Accesos -->
+                    <div class="task-card bg-white p-6 rounded-lg shadow-md flex flex-col">
+                        <h3 class="font-bold text-xl mb-3 flex items-center gap-3"><i class="fas fa-users-cog text-green-600"></i> Tarea 3: Gestión de Accesos</h3>
+                        <p class="text-gray-600 mb-4 flex-grow">Un empleado que fue de Ventas a Marketing y luego a Finanzas sigue teniendo acceso a los sistemas de los 3 departamentos. ¿Cómo se llama este riesgo?</p>
+                        <div class="space-y-2">
+                            <button data-task="3" data-correct="false" onclick="selectAnswer(this)" class="option-btn w-full text-left p-3 border rounded-md">Falla de Autenticación.</button>
+                            <button data-task="3" data-correct="false" onclick="selectAnswer(this)" class="option-btn w-full text-left p-3 border rounded-md">Conflicto de RTO.</button>
+                            <button data-task="3" data-correct="true" onclick="selectAnswer(this)" class="option-btn w-full text-left p-3 border rounded-md">Acumulación de Privilegios (Privilege Creep).</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Tarea 4: Operaciones -->
+                    <div class="task-card bg-white p-6 rounded-lg shadow-md flex flex-col">
+                        <h3 class="font-bold text-xl mb-3 flex items-center gap-3"><i class="fas fa-server text-orange-600"></i> Tarea 4: Operaciones de TI</h3>
+                        <p class="text-gray-600 mb-4 flex-grow">La empresa define que puede sobrevivir con una pérdida máxima de 24 horas de datos en caso de desastre. ¿A qué concepto de continuidad se refiere esto?</p>
+                        <div class="space-y-2">
+                            <button data-task="4" data-correct="false" onclick="selectAnswer(this)" class="option-btn w-full text-left p-3 border rounded-md">RTO (Recovery Time Objective).</button>
+                            <button data-task="4" data-correct="true" onclick="selectAnswer(this)" class="option-btn w-full text-left p-3 border rounded-md">RPO (Recovery Point Objective).</button>
+                             <button data-task="4" data-correct="false" onclick="selectAnswer(this)" class="option-btn w-full text-left p-3 border rounded-md">Regla de Backup 3-2-1.</button>
+                        </div>
+                    </div>
+                    
+                     <!-- Tarea 5: Gestión de Cambios -->
+                    <div class="task-card bg-white p-6 rounded-lg shadow-md flex flex-col">
+                        <h3 class="font-bold text-xl mb-3 flex items-center gap-3"><i class="fas fa-sitemap text-purple-600"></i> Tarea 5: Gestión de Cambios</h3>
+                        <p class="text-gray-600 mb-4 flex-grow">Se implementó un cambio crítico en producción, pero en la documentación no se encuentra el acta de aprobación del comité de cambios. ¿Qué falta en la evidencia?</p>
+                        <div class="space-y-2">
+                            <button data-task="5" data-correct="true" onclick="selectAnswer(this)" class="option-btn w-full text-left p-3 border rounded-md">La aprobación del CAB (Change Advisory Board).</button>
+                            <button data-task="5" data-correct="false" onclick="selectAnswer(this)" class="option-btn w-full text-left p-3 border rounded-md">La solicitud de cambio (CR).</button>
+                            <button data-task="5" data-correct="false" onclick="selectAnswer(this)" class="option-btn w-full text-left p-3 border rounded-md">La evidencia de las pruebas de QA.</button>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- Botón de Finalizar -->
+                <div class="text-center mt-12">
+                     <button id="finalize-btn" onclick="finalizeExam()" class="bg-blue-700 text-white font-bold py-4 px-8 rounded-lg shadow-lg hover:bg-blue-800 transition-transform hover:scale-105 disabled:bg-gray-400 disabled:cursor-not-allowed disabled:scale-100" disabled>Finalizar y Generar Reporte de Hallazgos</button>
+                </div>
+            </section>
+            
+            <!-- Cierre y Navegación -->
+            <section class="text-center mt-20 reveal">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Misión Completada</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto mb-8">Has finalizado tu primera revisión de controles. En la próxima sesión, nos adentraremos en el mundo de los estándares ISO, fundamentales para auditorías formales.</p>
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                    <a href="sesion7.html" class="w-full sm:w-auto inline-block border-2 border-amber-600 text-amber-600 font-bold py-3 px-8 rounded-lg shadow-md hover:bg-amber-100 transition duration-300">
+                        <i class="fas fa-arrow-left mr-2"></i> Regresar a la Sesión 7
+                    </a>
+                    <a href="sesion9.html" class="w-full sm:w-auto inline-block bg-amber-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-amber-700 transition duration-300">
+                        Continuar a la Sesión 9 <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal de Reporte Final -->
+     <div id="reportModal" class="modal fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 opacity-0 pointer-events-none z-50">
+        <div class="modal-content bg-white rounded-xl shadow-2xl p-8 max-w-2xl w-full transform scale-95">
+             <h3 class="text-2xl font-bold text-center mb-4">Papel de Trabajo: Resumen de Hallazgos</h3>
+             <div class="border rounded-lg p-4 bg-gray-50 text-left">
+                 <p><strong>Auditor:</strong> (Tu Nombre)</p>
+                 <p><strong>Fecha:</strong> 19 de Octubre de 2025</p>
+                 <p><strong>Asunto:</strong> Revisión Preliminar de Controles Generales de TI - Global Tech S.A.</p>
+                 <hr class="my-3">
+                 <h4 class="font-bold mb-2">Resumen de Puntos de Control Validados (<span id="score">0</span>/5 correctos):</h4>
+                 <ul id="report-list" class="list-disc list-inside space-y-2">
+                     <!-- Los resultados se llenarán dinámicamente -->
+                 </ul>
+             </div>
+             <button onclick="closeModal('reportModal')" class="mt-6 w-full bg-gray-700 text-white font-bold py-2 px-4 rounded-lg hover:bg-gray-800 transition">Cerrar Reporte</button>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white mt-20">
+        <div class="container mx-auto px-6 py-4 text-center">
+            <p>&copy; 2025 - Unidad Didáctica: Soporte de Auditoría de TI. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- General ---
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1 });
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // --- Lógica del Examen ---
+        const examState = {
+            task1: { answered: false, correct: false, text: "Hallazgo de Segregación de Funciones identificado correctamente." },
+            task2: { answered: false, correct: false, text: "Falla de integridad de evidencia detectada correctamente." },
+            task3: { answered: false, correct: false, text: "Riesgo de Acumulación de Privilegios identificado correctamente." },
+            task4: { answered: false, correct: false, text: "Concepto de RPO (Punto de Recuperación) validado correctamente." },
+            task5: { answered: false, correct: false, text: "Falta de aprobación del CAB en Gestión de Cambios detectada." }
+        };
+
+        function selectAnswer(button) {
+            const task = `task${button.dataset.task}`;
+            const isCorrect = button.dataset.correct === 'true';
+
+            // Marcar como respondida y si fue correcta
+            examState[task].answered = true;
+            examState[task].correct = isCorrect;
+
+            // Deshabilitar todos los botones para esta tarea
+            const optionButtons = document.querySelectorAll(`button[data-task="${button.dataset.task}"]`);
+            optionButtons.forEach(btn => {
+                btn.disabled = true;
+                // Marcar la respuesta correcta visualmente
+                if (btn.dataset.correct === 'true') {
+                    btn.classList.add('correct-answer');
+                }
+            });
+
+            // Marcar la respuesta del usuario
+            if (!isCorrect) {
+                button.classList.add('incorrect-answer');
+            }
+
+            checkCompletion();
+        }
+        
+        function checkCompletion() {
+            const allAnswered = Object.values(examState).every(task => task.answered);
+            if (allAnswered) {
+                document.getElementById('finalize-btn').disabled = false;
+            }
+        }
+        
+        function finalizeExam() {
+            let score = 0;
+            const reportList = document.getElementById('report-list');
+            reportList.innerHTML = ''; // Limpiar la lista
+
+            for (const [task, result] of Object.entries(examState)) {
+                const li = document.createElement('li');
+                if (result.correct) {
+                    score++;
+                    li.innerHTML = `<i class="fas fa-check-circle text-green-500 mr-2"></i> ${result.text}`;
+                    li.className = "text-green-700";
+                } else {
+                    li.innerHTML = `<i class="fas fa-times-circle text-red-500 mr-2"></i> Hallazgo incorrectamente identificado en la tarea de "${task.replace('task','Tarea ')}".`;
+                     li.className = "text-red-700";
+                }
+                reportList.appendChild(li);
+            }
+            
+            document.getElementById('score').textContent = score;
+            openModal('reportModal');
+        }
+
+        // --- Lógica del Modal ---
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            setTimeout(() => modal.querySelector('.modal-content').classList.remove('scale-95'), 50);
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            modal.querySelector('.modal-content').classList.add('scale-95');
+            setTimeout(() => modal.classList.add('opacity-0', 'pointer-events-none'), 300);
+        }
+
+    </script>
+
+</body>
+</html>
