@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 11: Hardening de Sistemas Operativos</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter & Fira Code -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .font-code {
+            font-family: 'Fira Code', monospace;
+        }
+        .hardening-gradient {
+            background: linear-gradient(135deg, #f59e0b, #4b5563, #1e3a8a);
+            background-size: 250% 250%;
+            animation: gradient-animation 20s ease infinite;
+        }
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Estilos para "Superficie de Ataque" */
+        .vulnerability-port {
+            transition: background-color 0.3s, color 0.3s;
+            cursor: pointer;
+        }
+        .vulnerability-port.open {
+            background-color: #fca5a5; /* red-300 */
+            color: #b91c1c; /* red-700 */
+        }
+        .vulnerability-port.closed {
+            background-color: #bbf7d0; /* green-200 */
+            color: #15803d; /* green-700 */
+        }
+         /* Estilos para el modal */
+        .modal {
+            transition: opacity 0.3s ease;
+        }
+        .modal-content {
+            transition: transform 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-gray-900">
+
+    <!-- ===== Header y Navegación ===== -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-gray-800">
+                <i class="fas fa-cogs text-amber-600"></i>
+                Soporte de Auditoría TI
+            </div>
+            <div class="hidden md:flex space-x-6">
+                <a href="#objetivos" class="text-gray-600 hover:text-amber-600 transition duration-300">Objetivos</a>
+                <a href="#hardening" class="text-gray-600 hover:text-amber-600 transition duration-300">Hardening</a>
+                <a href="#caso-practico" class="text-gray-600 hover:text-amber-600 transition duration-300">Laboratorio</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ===== Contenido Principal ===== -->
+    <main>
+
+        <!-- Sección Hero -->
+        <section class="hardening-gradient text-white py-20 md:py-32">
+            <div class="container mx-auto px-6 text-center reveal">
+                <h1 class="text-4xl md:text-6xl font-extrabold mb-4" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.4);">Sesión 11: La Fundación del Rascacielos Digital</h1>
+                <p class="text-xl md:text-2xl max-w-3xl mx-auto" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.4);">Hoy serás un ingeniero estructural, reforzando la fundación (el Sistema Operativo) para que sea impenetrable.</p>
+            </div>
+        </section>
+
+        <div class="container mx-auto px-6 py-12">
+            <!-- Sección de Objetivos -->
+            <section id="objetivos" class="mb-20 p-8 bg-white rounded-xl shadow-lg reveal">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-8">Habilidades del Ingeniero de Hardening</h2>
+                 <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="text-center p-6 bg-amber-50 rounded-lg">
+                        <i class="fas fa-shield-alt text-4xl text-amber-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Entender el "Hardening"</h3>
+                        <p class="text-gray-600">Definir el proceso de endurecimiento y su objetivo de reducir la superficie de ataque.</p>
+                    </div>
+                    <div class="text-center p-6 bg-amber-50 rounded-lg">
+                        <i class="fas fa-ruler-combined text-4xl text-amber-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Usar los "Planos" (CIS)</h3>
+                        <p class="text-gray-600">Comprender qué son los CIS Benchmarks y por qué son el estándar de oro para auditores.</p>
+                    </div>
+                    <div class="text-center p-6 bg-amber-50 rounded-lg">
+                        <i class="fas fa-tasks text-4xl text-amber-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Manejar las GPO</h3>
+                        <p class="text-gray-600">Identificar las políticas críticas de Contraseña, Bloqueo y Auditoría en Windows Server.</p>
+                    </div>
+                    <div class="text-center p-6 bg-amber-50 rounded-lg">
+                        <i class="fas fa-camera-retro text-4xl text-amber-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Generar Evidencia (Antes y Después)</h3>
+                        <p class="text-gray-600">Documentar los cambios de configuración de forma profesional y auditable.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección Hardening -->
+            <section id="hardening" class="mb-20 p-8 bg-white rounded-xl shadow-lg reveal">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-8">¿Qué es el Hardening? Reduciendo la Superficie de Ataque</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">Un servidor por defecto es como una casa con muchas ventanas y puertas abiertas. El Hardening es el proceso de cerrar y reforzar todo, dejando solo la puerta principal bien vigilada. Haz clic en las vulnerabilidades para sellarlas.</p>
+                <div class="max-w-xl mx-auto bg-slate-800 text-white p-8 rounded-lg">
+                    <h4 class="text-xl font-bold text-center mb-6">Estado del Servidor: SRV-WEB-01</h4>
+                    <div class="grid grid-cols-3 gap-4">
+                        <div id="port1" class="vulnerability-port open rounded-md p-3 text-center" onclick="togglePort('port1')">
+                            <i class="fas fa-door-open text-2xl mb-1"></i><p class="font-semibold text-xs">Servicio RDP Abierto</p>
+                        </div>
+                        <div id="port2" class="vulnerability-port open rounded-md p-3 text-center" onclick="togglePort('port2')">
+                            <i class="fas fa-bug text-2xl mb-1"></i><p class="font-semibold text-xs">Cuenta "Invitado" Activa</p>
+                        </div>
+                        <div id="port3" class="vulnerability-port open rounded-md p-3 text-center" onclick="togglePort('port3')">
+                            <i class="fas fa-folder-open text-2xl mb-1"></i><p class="font-semibold text-xs">Recursos Compartidos Anónimos</p>
+                        </div>
+                    </div>
+                    <button id="hardening-btn" onclick="applyHardening()" class="mt-8 w-full bg-amber-600 font-bold py-3 px-4 rounded-lg hover:bg-amber-700 transition">Aplicar Hardening (CIS Benchmark)</button>
+                </div>
+            </section>
+            
+            <!-- Caso Práctico -->
+            <section id="caso-practico" class="reveal">
+                <h2 class="text-3xl font-bold text-center text-gray-900 mb-2">Laboratorio Interactivo de Hardening (secpol.msc)</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-4xl mx-auto">Tu misión es aplicar el Checklist de Hardening CIS al servidor SRV-WEB-01. Modifica las políticas según lo recomendado. Tu reporte de "Antes y Después" se generará automáticamente.</p>
+
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <!-- Checklist de Tareas -->
+                    <div class="bg-white rounded-xl shadow-2xl p-6">
+                        <h3 class="font-bold text-xl mb-4">Checklist de Hardening (Basado en CIS)</h3>
+                        <div class="space-y-4">
+                            <!-- Tarea 1 -->
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <div>
+                                    <p class="font-semibold">Longitud mínima de la contraseña</p>
+                                    <p class="text-sm text-gray-500">Recomendado: 12 caracteres</p>
+                                </div>
+                                <button id="btn-task1" onclick="openPolicyModal('task1', 'Longitud mínima de la contraseña', 8, 12, 'caracteres')" class="bg-blue-600 text-white font-semibold py-1 px-3 rounded-lg hover:bg-blue-700 transition text-sm">Configurar</button>
+                            </div>
+                            <!-- Tarea 2 -->
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <div>
+                                    <p class="font-semibold">Vigencia máxima de la contraseña</p>
+                                    <p class="text-sm text-gray-500">Recomendado: 30 días</p>
+                                </div>
+                                <button id="btn-task2" onclick="openPolicyModal('task2', 'Vigencia máxima de la contraseña', 42, 30, 'días')" class="bg-blue-600 text-white font-semibold py-1 px-3 rounded-lg hover:bg-blue-700 transition text-sm">Configurar</button>
+                            </div>
+                            <!-- Tarea 3 -->
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <div>
+                                    <p class="font-semibold">Umbral de bloqueo de cuenta</p>
+                                    <p class="text-sm text-gray-500">Recomendado: 5 intentos</p>
+                                </div>
+                                <button id="btn-task3" onclick="openPolicyModal('task3', 'Umbral de bloqueo de cuenta', 0, 5, 'intentos')" class="bg-blue-600 text-white font-semibold py-1 px-3 rounded-lg hover:bg-blue-700 transition text-sm">Configurar</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Reporte de Evidencia -->
+                    <div class="bg-white rounded-xl shadow-2xl p-6">
+                        <h3 class="font-bold text-xl mb-4">Reporte de Hardening: SRV-WEB-01.docx</h3>
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="border-b bg-slate-50">
+                                    <th class="p-2 font-semibold text-sm">Política</th>
+                                    <th class="p-2 font-semibold text-sm">Antes</th>
+                                    <th class="p-2 font-semibold text-sm">Después</th>
+                                    <th class="p-2 font-semibold text-sm">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="row-task1" class="border-b">
+                                    <td class="p-2 text-sm">Longitud Contraseña</td>
+                                    <td id="before-task1" class="p-2 text-sm font-code">8</td>
+                                    <td id="after-task1" class="p-2 text-sm font-code">--</td>
+                                    <td id="status-task1" class="p-2 text-sm"><i class="fas fa-clock text-gray-400"></i></td>
+                                </tr>
+                                <tr id="row-task2" class="border-b">
+                                    <td class="p-2 text-sm">Vigencia Contraseña</td>
+                                    <td id="before-task2" class="p-2 text-sm font-code">42</td>
+                                    <td id="after-task2" class="p-2 text-sm font-code">--</td>
+                                    <td id="status-task2" class="p-2 text-sm"><i class="fas fa-clock text-gray-400"></i></td>
+                                </tr>
+                                <tr id="row-task3">
+                                    <td class="p-2 text-sm">Umbral Bloqueo</td>
+                                    <td id="before-task3" class="p-2 text-sm font-code">0</td>
+                                    <td id="after-task3" class="p-2 text-sm font-code">--</td>
+                                    <td id="status-task3" class="p-2 text-sm"><i class="fas fa-clock text-gray-400"></i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Cierre y Navegación -->
+            <section class="text-center mt-20 reveal">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">¡Fundación Reforzada!</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto mb-8">Has aplicado con éxito el hardening a un servidor, generando la evidencia auditable. En la próxima sesión, auditaremos las redes y la seguridad perimetral.</p>
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                    <a href="sesion10.html" class="w-full sm:w-auto inline-block border-2 border-amber-600 text-amber-600 font-bold py-3 px-8 rounded-lg shadow-md hover:bg-amber-100 transition duration-300">
+                        <i class="fas fa-arrow-left mr-2"></i> Regresar a la Sesión 10
+                    </a>
+                    <a href="sesion12.html" class="w-full sm:w-auto inline-block bg-amber-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-amber-700 transition duration-300">
+                        Continuar a la Sesión 12 <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal de Configuración de Política -->
+     <div id="policyModal" class="modal fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 opacity-0 pointer-events-none z-50">
+        <div class="modal-content bg-white rounded-xl shadow-2xl p-8 max-w-md w-full transform scale-95">
+             <h3 class="text-xl font-bold mb-4" id="modal-policy-name">Nombre de la Política</h3>
+             <div class="space-y-4">
+                 <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-md">
+                     <p class="font-bold">Valor ANTES (No Conforme):</p>
+                     <p class="text-3xl font-code" id="modal-before-value">8</p>
+                 </div>
+                 <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-md">
+                     <p class="font-bold">Recomendación CIS (DESPUÉS):</p>
+                     <p class="text-3xl font-code" id="modal-recommended-value">12</p>
+                 </div>
+                 <div>
+                     <label for="policy-input" class="block font-semibold">Establecer nuevo valor:</label>
+                     <input id="policy-input" type="number" class="w-full p-2 border rounded-md mt-1 font-code text-lg">
+                 </div>
+             </div>
+             <button onclick="applyPolicy()" class="mt-6 w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition">Aplicar y Generar Evidencia</button>
+        </div>
+    </div>
+    
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white mt-20">
+        <div class="container mx-auto px-6 py-4 text-center">
+            <p>&copy; 2025 - Unidad Didáctica: Soporte de Auditoría de TI. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- General ---
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1 });
+        revealElements.forEach(el => revealObserver.observe(el));
+        
+        // --- Hardening Visual ---
+        function togglePort(portId) {
+            const port = document.getElementById(portId);
+            if (port.classList.contains('open')) {
+                port.classList.replace('open', 'closed');
+                port.querySelector('i').className = 'fas fa-shield-alt text-2xl mb-1';
+                port.querySelector('p').textContent = port.querySelector('p').textContent.replace('Abierto', 'Cerrado').replace('Activa', 'Inactiva');
+            }
+        }
+        
+        function applyHardening() {
+            togglePort('port1');
+            togglePort('port2');
+            togglePort('port3');
+            const btn = document.getElementById('hardening-btn');
+            btn.textContent = '¡Servidor Asegurado!';
+            btn.classList.replace('bg-amber-600', 'bg-green-600');
+            btn.disabled = true;
+        }
+
+        // --- Laboratorio Interactivo ---
+        let currentTask = {
+            taskId: '',
+            policyName: '',
+            beforeValue: 0,
+            recommendedValue: 0,
+            unit: ''
+        };
+
+        function openPolicyModal(taskId, policyName, beforeValue, recommendedValue, unit) {
+            currentTask = { taskId, policyName, beforeValue, recommendedValue, unit };
+            
+            document.getElementById('modal-policy-name').textContent = policyName;
+            document.getElementById('modal-before-value').textContent = `${beforeValue} ${unit}`;
+            document.getElementById('modal-recommended-value').textContent = `${recommendedValue} ${unit}`;
+            document.getElementById('policy-input').value = recommendedValue; // Pre-llenar con el valor correcto
+            
+            openModal('policyModal');
+        }
+
+        function applyPolicy() {
+            const inputValue = document.getElementById('policy-input').value;
+            const { taskId, beforeValue, recommendedValue, unit } = currentTask;
+            
+            if (parseInt(inputValue) !== recommendedValue) {
+                alert(`Valor incorrecto. La recomendación CIS para esta política es ${recommendedValue}. Inténtalo de nuevo.`);
+                return;
+            }
+            
+            // Actualizar la tabla de reporte
+            document.getElementById(`before-${taskId}`).innerHTML = `<del class="text-red-500">${beforeValue}</del>`;
+            document.getElementById(`after-${taskId}`).textContent = inputValue;
+            document.getElementById(`status-${taskId}`).innerHTML = `<i class="fas fa-check-circle text-green-500" title="Completado"></i>`;
+            
+            // Actualizar el botón de la tarea
+            const taskButton = document.getElementById(`btn-${taskId}`);
+            taskButton.textContent = 'Completado';
+            taskButton.disabled = true;
+            taskButton.classList.replace('bg-blue-600', 'bg-green-600');
+            
+            closeModal('policyModal');
+        }
+
+        // --- Lógica del Modal ---
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            setTimeout(() => modal.querySelector('.modal-content').classList.remove('scale-95'), 50);
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            modal.querySelector('.modal-content').classList.add('scale-95');
+            setTimeout(() => modal.classList.add('opacity-0', 'pointer-events-none'), 300);
+        }
+
+    </script>
+
+</body>
+</html>
